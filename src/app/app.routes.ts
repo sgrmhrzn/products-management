@@ -1,7 +1,10 @@
 import { Routes } from '@angular/router';
+import { LoginComponent } from './pages/login/login.component';
+import { AuthLayoutComponent } from './core/components/auth-layout/auth-layout.component';
+import { AUTH_ROUTES } from './core/components/auth-layout/auth.routes';
+import { AuthGuard } from './core/guards/auth.guard';
 
 export const routes: Routes = [
-  { path: '', pathMatch: 'full', redirectTo: '/products' },
-  { path: 'products', loadChildren: () => import('./pages/products/products.routes').then(m => m.PRODUCTS_ROUTES) },
-  { path: 'users', loadChildren: () => import('./pages/users/users.routes').then(m => m.USERS_ROUTES) }
+  { path: 'login', pathMatch: 'full', component: LoginComponent },
+  { path: '', component: AuthLayoutComponent, children: AUTH_ROUTES, canActivateChild: [AuthGuard] }
 ];

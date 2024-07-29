@@ -1,0 +1,28 @@
+<nz-drawer [nzClosable]="false" [nzVisible]="true" nzPlacement="right" nzTitle="User" (nzOnClose)="handleCancel()"
+    [nzFooter]="nzFooterContent">
+    <ng-container *nzDrawerContent>
+        <form nz-form [formGroup]="form" nzLayout="vertical" class="user-form">
+            <nz-form-item>
+                <nz-form-label nzRequired nzFor="title">Name</nz-form-label>
+                <nz-form-control nzErrorTip="Please input title!">
+                    <nz-input-group nzPrefixIcon="form">
+                        <input type="text" nz-input formControlName="name" placeholder="Name" />
+                    </nz-input-group>
+                </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
+                <nz-form-label nzRequired nzFor="role">Role</nz-form-label>
+                <nz-form-control nzErrorTip="Please select role!">
+                    <nz-select ngModel="lucy" formControlName="role" nzPlaceHolder="Select role">
+                        <nz-option nzValue="0" nzLabel="Admin"></nz-option>
+                        <nz-option nzValue="1" nzLabel="Normal"></nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+        </form>
+    </ng-container>
+</nz-drawer>
+<ng-template #nzFooterContent>
+    <button nz-button nzType="primary" [disabled]="form.invalid" (click)="handleOk()">Save</button>
+    <button nz-button nzType="default" style="margin-left: 1rem;" (click)="handleCancel()">Cancel</button>
+</ng-template>

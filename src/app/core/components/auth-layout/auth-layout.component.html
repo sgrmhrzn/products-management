@@ -1,0 +1,54 @@
+<nz-layout class="app-layout">
+    <nz-sider class="menu-sidebar" nzCollapsible nzBreakpoint="lg" [nzCollapsedWidth]="0">
+        <div class="sidebar-logo">
+            <a target="_blank">
+                <span></span>
+                <h1>Products Management</h1>
+            </a>
+        </div>
+        <ul nz-menu nzTheme="dark" nzMode="inline" [nzInlineCollapsed]="isCollapsed">
+            <li nz-menu-item nzMatchRouter routerLink="/products">
+                <span nz-icon nzType="appstore"></span>
+                <span>Products</span>
+            </li>
+
+            <li nz-menu-item nzMatchRouter routerLink="/favorites">
+                <span nz-icon nzType="heart"></span>
+                <span>Favorites</span>
+            </li>
+            @if((activeUser$ | async)?.role === roleEnum.Admin){
+            <li nz-menu-item nzMatchRouter routerLink="/users">
+                <span nz-icon nzType="team"></span>
+                <span>Users</span>
+            </li>
+            }
+        </ul>
+    </nz-sider>
+    <nz-layout>
+        <nz-header>
+            <div class="app-header">
+                @if(activeUser$ | async; as user) {
+                <span style="float: right;padding-right: 1rem;">
+                    <a nzType="down" nzTrigger="click" nz-dropdown [nzDropdownMenu]="menu2"
+                        nzPlacement="bottomRight"><nz-avatar nz-tooltip [nzTooltipTitle]="user.name"
+                            [nzText]="user.name?.charAt(0)"
+                            style="color:#f56a00; background-color:#fde3cf;"></nz-avatar></a>
+                </span>
+                <nz-dropdown-menu #menu2="nzDropdownMenu">
+                    <ul nz-menu>
+                        <li nz-menu-item> {{user.name}}
+                        </li>
+                        <li nz-menu-divider></li>
+                        <li nz-menu-item (click)="logout()">Logout</li>
+                    </ul>
+                </nz-dropdown-menu>
+                }
+            </div>
+        </nz-header>
+        <nz-content>
+            <div class="inner-content">
+                <router-outlet></router-outlet>
+            </div>
+        </nz-content>
+    </nz-layout>
+</nz-layout>

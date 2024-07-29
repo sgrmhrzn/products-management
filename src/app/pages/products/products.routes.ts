@@ -7,6 +7,7 @@ export const PRODUCTS_ROUTES: Routes = [
     path: '', component: ProductsComponent,
     children: [
       { path: 'add', component: ProductDrawerComponent, outlet: 'drawer' },
+      { path: 'edit/:id', component: ProductDrawerComponent, outlet: 'drawer' },
     ]
   }
 ];

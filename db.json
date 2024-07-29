@@ -1,0 +1,137 @@
+{
+  "products": [
+    {
+      "id": "3b6d165d-298d-467c-82cd-300072c824d2",
+      "createdDate": "2024-07-27T01:31:24.442Z",
+      "label": "Logitech",
+      "price": "300"
+    },
+    {
+      "id": "1570d4b3-bfd7-4b19-b862-bd9556d7bfb3",
+      "createdDate": "2024-07-27T01:31:50.931Z",
+      "label": "Mouse",
+      "price": "499"
+    },
+    {
+      "id": "77a52f67-433f-4d0a-9a31-03e8f300dcf3",
+      "createdDate": "2024-07-27T03:06:38.646Z",
+      "label": "Head phone",
+      "price": 499
+    },
+    {
+      "id": "c3a9ddd5-e952-4d38-a6a7-62cac9327320",
+      "createdDate": "2024-07-27T03:06:47.430Z",
+      "label": "Bottle",
+      "price": 400
+    },
+    {
+      "id": "a3bb9cc7-7b53-409d-bf38-1b43ef3c83c3",
+      "createdDate": "2024-07-27T03:08:01.111Z",
+      "label": "Laptop",
+      "price": 100000
+    },
+    {
+      "id": "af65d3dd-a201-4ea0-b338-3da640f1fdb5",
+      "createdDate": "2024-07-27T03:08:35.593Z",
+      "label": "Fan",
+      "price": 4000
+    },
+    {
+      "id": "93258f0c-8eb2-4600-99fd-0cc9879aa559",
+      "createdDate": "2024-07-27T03:08:45.980Z",
+      "label": "Toy",
+      "price": 55
+    },
+    {
+      "id": "a3646d96-55bf-4cb0-975d-a7433a08be7e",
+      "createdDate": "2024-07-27T03:08:51.185Z",
+      "label": "Doll",
+      "price": 500
+    },
+    {
+      "id": "f33c63b9-8dd5-48fc-908c-fdbae217e31e",
+      "createdDate": "2024-07-27T03:09:10.264Z",
+      "label": "Wheel",
+      "price": 500
+    },
+    {
+      "id": "f86bc0db-d0dc-431b-a40a-c1172b8e2ad9",
+      "createdDate": "2024-07-27T03:09:17.791Z",
+      "label": "Wai wai",
+      "price": 50
+    },
+    {
+      "id": "b3bbecf5-f003-4944-9745-ce764807f810",
+      "createdDate": "2024-07-27T03:09:26.198Z",
+      "label": "Noodle",
+      "price": 55
+    },
+    {
+      "id": "55f525d6-6ea1-4810-8ae2-f52f56d423dc",
+      "createdDate": "2024-07-27T03:09:51.836Z",
+      "label": "Cycle",
+      "price": 50000
+    },
+    {
+      "id": "2391d59f-afee-4221-ae7b-223efb4b659f",
+      "createdDate": "2024-07-29T02:08:53.528Z",
+      "label": "T-shirt",
+      "price": 4000
+    }
+  ],
+  "users": [
+    {
+      "name": "Super admin",
+      "username": "sadmin",
+      "password": "123456",
+      "id": "4e1ea1d3-e385-47ec-9344-0995a6804438",
+      "canDelete": false,
+      "createdOn": "2024-06-18T02:38:59.857Z",
+      "role": 0
+    },
+    {
+      "id": "d0e90238-d76c-4f04-9ca0-50c3d99762bb",
+      "name": "rshakya",
+      "canDelete": true,
+      "username": "rshakya",
+      "password": "123456",
+      "createdDate": "2024-07-29T02:20:53.177Z"
+    }
+  ],
+  "favorites": [
+    {
+      "id": "e5796595-40ad-4f58-9908-36577eabcd0c",
+      "userId": "4e1ea1d3-e385-47ec-9344-0995a6804438",
+      "products": [
+        {
+          "id": "1570d4b3-bfd7-4b19-b862-bd9556d7bfb3",
+          "label": "Mouse",
+          "price": "499",
+          "isFavorite": true
+        },
+        {
+          "id": "55f525d6-6ea1-4810-8ae2-f52f56d423dc",
+          "label": "Cycle",
+          "price": 50000,
+          "isFavorite": true
+        },
+        {
+          "id": "f86bc0db-d0dc-431b-a40a-c1172b8e2ad9",
+          "label": "Wai wai",
+          "price": 50
+        }
+      ]
+    },
+    {
+      "id": "b677487b-1d30-4025-a99c-1501ef9695cd",
+      "userId": "4e1ea1d3-e385-47ec-9344-0995a6804438",
+      "products": [
+        {
+          "id": "f86bc0db-d0dc-431b-a40a-c1172b8e2ad9",
+          "label": "Wai wai",
+          "price": 50
+        }
+      ]
+    }
+  ]
+}

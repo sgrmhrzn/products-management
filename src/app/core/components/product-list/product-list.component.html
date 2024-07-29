@@ -1,0 +1,51 @@
+<div nz-flex nzJustify="space-between" nzAlign="center">
+    <h1>{{config.title}}</h1>
+    <div nz-flex nzAlign="center">
+        <form nz-form [formGroup]="searchForm" nzLayout="vertical" class="login-form">
+            <nz-form-item>
+                <nz-form-control nzErrorTip="Please input label!">
+                    <nz-input-group nzPrefixIcon="search">
+                        <input type="text" nz-input formControlName="keyword" placeholder="Search" />
+                    </nz-input-group>
+                </nz-form-control>
+            </nz-form-item>
+        </form>
+        <!-- @if(permission.add){ -->
+        @if (config.showActionBtn && (activeUser$ | async)?.role === roleEnum.Admin) {
+        <a (click)="add()" nz-tooltip nzTooltipTitle="Add"><span nz-icon [style.fontSize]="'25px'" nzType="plus-circle"
+                nzTheme="twotone"></span></a>
+        }
+        <!-- } -->
+    </div>
+</div>
+
+<div #productsContainer class="product-list" nz-flex [nzGap]="'large'" nzWrap="wrap">
+    @if (config.data$| async; as products) {
+    @if(products.length){
+
+    @for (product of products; track $index;) {
+    <nz-card style="width:18.3%;height: max-content;" [nzCover]="coverTemplate"
+        [nzActions]="config.showActionBtn && (activeUser$ | async)?.role === roleEnum.Admin? [actionFavorite,actionEdit, actionDelete]:[actionFavorite]">
+        <!-- <img src="https://loremflickr.com/320/240" style="width: 100%;" /> -->
+        <nz-card-meta [nzTitle]="product.label" [nzDescription]="product.price"></nz-card-meta>
+        <ng-template #actionEdit>
+            <span nz-icon nzType="edit" nzTooltipTitle="Edit" (click)="edit(product.id)"></span>
+        </ng-template>
+        <ng-template #actionFavorite>
+            <span nz-icon nzType="heart" [nzTheme]="product.isFavorite?'fill':'outline'" (click)="setFavorite(product)"
+                nzTooltipTitle="Add favorite"></span>
+        </ng-template>
+        <ng-template #actionDelete>
+            <span nz-icon nzType="delete" nzTooltipTitle="Delete"></span>
+        </ng-template>
+        <ng-template #coverTemplate>
+            <img alt="example" src="https://loremflickr.com/320/240" />
+        </ng-template>
+    </nz-card>
+    }
+    }@else {
+    <nz-empty></nz-empty>
+    }
+    }
+</div>
+<router-outlet name="drawer"></router-outlet>

@@ -1,1 +1,39 @@
-<p>users works!</p>
+<div nz-flex nzJustify="space-between" nzAlign="center">
+    <h1>Users</h1>
+    <a (click)="addUser()" nz-tooltip nzTooltipTitle="Add"><span nz-icon [style.fontSize]="'25px'"
+            nzType="plus-circle" nzTheme="twotone"></span></a>
+</div>
+<section>
+    <nz-table #basicTable [nzData]="(users$ | async) || []">
+        <thead>
+            <tr>
+                <th>S.N</th>
+                <th>Name</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for(data of basicTable.data; track data.id;let i = $index){
+            <tr>
+                <td>{{i + 1}}</td>
+                <td>{{data.name}}</td>
+                <td>
+                    <a (click)="viewDetails(data.id)" nz-tooltip nzTooltipTitle="Detail"><span nz-icon nzType="info-circle"
+                            nzTheme="twotone"></span></a>
+                    @if (data.canDelete) {
+
+                    <nz-divider nzType="vertical"></nz-divider>
+                    <nz-divider nzType="vertical"></nz-divider>
+                    <a nz-popconfirm [nzPopconfirmTitle]="'Are you sure delete '+ data.name + ' user?'"
+                        nzPopconfirmPlacement="bottom" (nzOnConfirm)="confirmDelete(data)" nz-tooltip
+                        nzTooltipTitle="Delete"><span nz-icon nzType="delete" nzTheme="twotone"
+                            [nzTwotoneColor]="'#eb2f96'"></span></a>
+                    }
+                </td>
+            </tr>
+            }
+        </tbody>
+    </nz-table>
+</section>
+
+<router-outlet name="drawer"></router-outlet>
