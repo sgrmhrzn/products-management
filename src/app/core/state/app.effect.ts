@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { switchMap, of, map, catchError, concatMap, mergeMap, throwError, zip, Observable } from "rxjs";
+import { switchMap, of, map, catchError, concatMap, mergeMap, throwError, zip, Observable, forkJoin } from "rxjs";
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import * as actions from "./app.action";
 import { NzMessageService } from 'ng-zorro-antd/message';
@@ -90,15 +90,28 @@ export class AppEffects {
             ofType(actions.fetchProductsRequest),
             switchMap(({ params }) =>
                 this.productService.getAll(params).pipe(
-                    map((response) => {
+                    mergeMap((response) => {
                         const link = this.commonService.parse_link_header(response.headers.get('link') || '');
                         const queryParams: IQueryParmsModel = {
                             ...params,
                             pages: link ? link["last"].split('_page=')[1] : 1,
                         }
-                        return actions.fetchProductsRequestSuccess({ products: response.body as IProductModel[], queryParams });
-                    }),
-                    catchError(() => of())
+                        const list = new Array<Observable<any>>();
+                        response.body?.forEach(x => {
+                            list.push(this.userService.isFavorite(params.userId || '', x.id).pipe(map(p => p[0])));
+                            // .pipe(map(res => {
+                            //     x.isFavorite = res ? true : false;
+                            // }),
+                            //     catchError(() => of())
+                            // ))
+                        })
+                        // concatMap(res =>
+                        return forkJoin(list).pipe(map(res => {
+                            response.body?.map(x => x.isFavorite = res.find(y => y?.productId === x.id) ? true : false);
+                            return actions.fetchProductsRequestSuccess({ products: response.body as IProductModel[], queryParams });
+                        }));
+                        // ))
+                    })
                 )
             )
         )
@@ -111,13 +124,22 @@ export class AppEffects {
         this.actions$.pipe(
             ofType(actions.addProductRequest),
             switchMap(({ product }) =>
-                this.productService.add(product).pipe(map((response) => {
-                    const msg = `${response.label} product added`;
+                this.productService.getProductByLabel(product.label).pipe(concatMap(r => {
+                    const msg = `${product.label} product added`;
+                    if (r.length) {
+                        this.messageService.error(`${product.label} already exists`);
+                        return of();
+                    } else {
+                        return this.productService.add(product).pipe(map((response) => {
 
-                    this.messageService.success(msg);
-                    return actions.addProduct({ product });
-                })
-                )
+                            this.messageService.success(msg);
+                            this.router.navigate(['products']);
+                            return actions.addProduct({ product });
+
+                        })
+                        )
+                    }
+                }))
             )
         )
     );
@@ -129,10 +151,18 @@ export class AppEffects {
         this.actions$.pipe(
             ofType(actions.updateProductRequest),
             switchMap(({ product }) =>
-                this.productService.update(product).pipe(map((response) => {
-                    const msg = `${response.label} product updated`;
-                    this.messageService.success(msg);
-                    return actions.updateProduct({ product });
+                this.productService.getProductByLabel(product.label).pipe(concatMap(r => {
+                    if (r.length) {
+                        this.messageService.error(`${product.label} already exists`);
+                        return of();
+                    } else {
+                        return this.productService.update(product).pipe(map((response) => {
+                            const msg = `${response.label} product updated`;
+                            this.messageService.success(msg);
+                            this.router.navigate(['products']);
+                            return actions.updateProduct({ product });
+                        }))
+                    }
                 })
                 )
             )
@@ -147,7 +177,7 @@ export class AppEffects {
             ofType(actions.deleteProductRequest),
             switchMap(({ product }) =>
                 this.productService.delete(product.id).pipe(map((response) => {
-                    const msg = `${response.label} product deleted`;
+                    const msg = `${product.label} product deleted`;
                     this.messageService.success(msg);
                     return actions.deleteProduct({ id: product.id });
                 })

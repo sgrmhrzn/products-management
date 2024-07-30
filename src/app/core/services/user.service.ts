@@ -14,6 +14,7 @@ import { IQueryParmsModel } from '../models/query-params.model';
  * Communicate with server for user information
  */
 export class UserService {
+
   constructor(private http: HttpClient) { }
 
   /**
@@ -69,7 +70,11 @@ export class UserService {
     return this.http.delete<IFavoriteModel>(`${environment.SERVER_URL}favorites/${favorite.id}`);
   }
 
-  getFavorite(queryParams: IQueryParmsModel):Observable<HttpResponse<IFavoriteProductModel[]>> {
+  getFavorite(queryParams: IQueryParmsModel): Observable<HttpResponse<IFavoriteProductModel[]>> {
     return this.http.get<IFavoriteProductModel[]>(`${environment.SERVER_URL}favorites?userId=${queryParams.userId}&label_like=${queryParams.searchKeyword}&_page=${queryParams.page}`, { observe: 'response' });
+  }
+
+  isFavorite(userId: string, productId: string) {
+    return this.http.get<IFavoriteProductModel[]>(`${environment.SERVER_URL}favorites?userId=${userId}&productId=${productId}`);
   }
 }

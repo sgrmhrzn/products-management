@@ -17,7 +17,7 @@ export class ProductService {
   * Fetch all products
   *
   * */
-  getAll(queryParams:IQueryParmsModel): Observable<HttpResponse<IProductModel[]>> {
+  getAll(queryParams: IQueryParmsModel): Observable<HttpResponse<IProductModel[]>> {
     return this.http.get<IProductModel[]>(`${environment.SERVER_URL}products?label_like=${queryParams.searchKeyword}&_page=${queryParams.page}`, { observe: 'response' });
   }
 
@@ -47,5 +47,15 @@ export class ProductService {
   delete(id: string): Observable<IProductModel> {
     return this.http.delete<IProductModel>(`${environment.SERVER_URL}products/${id}`);
   }
+
+  /**
+ * Add new product
+ * @param product IProductModel - product information
+ * @returns Observable<IProductModel>
+ */
+  getProductByLabel(label: string): Observable<IProductModel[]> {
+    return this.http.get<IProductModel[]>(`${environment.SERVER_URL}products?label=${label}`);
+  }
+
 
 }

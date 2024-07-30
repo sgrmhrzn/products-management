@@ -11,18 +11,20 @@ import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzSpinModule } from 'ng-zorro-antd/spin';
+import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
 import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
-import { debounceTime, firstValueFrom, fromEvent, Observable, of } from 'rxjs';
+import { debounceTime, delay, firstValueFrom, fromEvent, Observable, of } from 'rxjs';
 import { CommonService } from '../../services/common.service';
 import { IGlobalState, initialState } from '../../state/app.reducer';
 import _ from 'lodash';
-import { updateFavoriteFlag, removeFavoriterRequest, addFavoriteRequest, fetchFavoritesRequest, fetchProductsRequest } from '../../state/app.action';
+import { updateFavoriteFlag, removeFavoriterRequest, addFavoriteRequest, fetchFavoritesRequest, fetchProductsRequest, deleteProductRequest } from '../../state/app.action';
 import { IFavoriteModel, IFavoriteProductModel } from '../../models/favorite.model';
 import { selectActiveUser, selectFavorite, selectProducts, selectQueryParams } from '../../state/app.selectors';
 import { IProductModel } from '../../models/product.model';
 import { IQueryParmsModel } from '../../models/query-params.model';
 import { IProductListConfigModel } from '../../models/product-list-config.model';
 import { RoleEnum } from '../../../enum/role.enum';
+import { PageTypeEnum } from '../../../enum/page-type.enum';
 
 @Component({
   selector: 'app-product-list',
@@ -30,7 +32,7 @@ import { RoleEnum } from '../../../enum/role.enum';
   imports: [RouterModule, NzCardModule, NzAvatarModule,
     NzIconModule, NzFlexModule, CommonModule,
     NzEmptyModule, FormsModule, NzInputModule,
-    NzFormModule, ReactiveFormsModule, NzToolTipModule, NzSpinModule],
+    NzFormModule, ReactiveFormsModule, NzToolTipModule, NzSpinModule, NzPopconfirmModule],
   templateUrl: './product-list.component.html',
   styleUrl: './product-list.component.scss'
 })
@@ -48,6 +50,7 @@ export class ProductListComponent {
     keyword: ['', []],
   });
   roleEnum = RoleEnum;
+  pageEnum = PageTypeEnum;
   hideLoader = true;
   constructor(private router: Router, private store: Store<IGlobalState>, private fb: NonNullableFormBuilder, private commonService: CommonService) {
 
@@ -62,17 +65,23 @@ export class ProductListComponent {
     this.router.navigate(['products', { outlets: { drawer: ['edit', id] } }]);
   }
 
+  deleteProduct(product: IProductModel | IFavoriteProductModel) {
+    this.store.dispatch(deleteProductRequest({ product: product as IProductModel }))
+  }
+
 
   async setFavorite(product: IProductModel | IFavoriteProductModel) {
     const favorites = await firstValueFrom(this.favorites$);
     const user = await firstValueFrom(this.activeUser$);
     const newFavorites = _.clone(favorites);
     const checkProduct = newFavorites.find(f => f.id === product.id);
-    if (checkProduct) {
+    if (checkProduct && this.config.type === this.pageEnum.Favorites) {
       this.store.dispatch(removeFavoriterRequest({ favorite: checkProduct }));
     } else {
-      const fav = { id: this.commonService.uuidv4(), productId: product.id, label: product.label, price: product.price, userId: user?.id || '' };
-      this.store.dispatch(addFavoriteRequest({ favorite: fav }));
+      if (!product.isFavorite) {
+        const fav = { id: this.commonService.uuidv4(), productId: product.id, label: product.label, price: product.price, userId: user?.id || '' };
+        this.store.dispatch(addFavoriteRequest({ favorite: fav }));
+      }
     }
 
   }
@@ -97,12 +106,12 @@ export class ProductListComponent {
     if ((event.target.offsetHeight + event.target.scrollTop) >= event.target.scrollHeight) {
       const params = await firstValueFrom(this.queryParams$);
       if (params.pages > params.page) {
-        this.hideLoader = false;
+        // this.hideLoader = false;
 
-        const result = of().pipe(debounceTime(500));
-        result.subscribe(async r => this.hideLoader = true);
+        // const result = of().pipe(delay(1000));
+        // result.subscribe(r => {this.hideLoader = true; console.log('hide')});
 
-        this.hideLoader = true;
+        // this.hideLoader = true;
         this.config.onLoad({ ...params, page: params.page + 1, userEvent: 'scroll' });
       }
     }

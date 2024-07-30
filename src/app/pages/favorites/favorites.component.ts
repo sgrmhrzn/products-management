@@ -8,6 +8,7 @@ import { Store } from '@ngrx/store';
 import { fetchFavoritesRequest } from '../../core/state/app.action';
 import { IProductListConfigModel } from '../../core/models/product-list-config.model';
 import { IQueryParmsModel } from '../../core/models/query-params.model';
+import { PageTypeEnum } from '../../enum/page-type.enum';
 
 @Component({
   selector: 'app-favorite',
@@ -22,8 +23,8 @@ export class FavoriteComponent implements OnInit {
   queryParams$ = this.store.select(selectQueryParams);
   config: IProductListConfigModel = {
     data$: this.favorites$,
-    title: 'Favorites',
     showActionBtn: false,
+    type:PageTypeEnum.Favorites,
     onLoad: (params: IQueryParmsModel) => this.store.dispatch(fetchFavoritesRequest({ params })),
     // onScroll: async (params: IQueryParmsModel) => await this.fetchData(params)
   }

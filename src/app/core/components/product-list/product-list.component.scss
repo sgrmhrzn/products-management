@@ -2,7 +2,9 @@
     overflow-y: scroll;
     height: calc(100% - 80px);
 }
-
+.ant-form-item{
+    margin: 0;
+}
 .thumbnail{
     object-fit: cover;
     object-position: center;

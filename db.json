@@ -230,6 +230,27 @@
       "label": "Cycle",
       "price": 50000,
       "userId": "4e1ea1d3-e385-47ec-9344-0995a6804438"
+    },
+    {
+      "id": "ce375f59-e39a-4963-a414-db14c762d119",
+      "productId": "f9107373-a406-4023-af25-9869db110c61",
+      "label": "Mirror",
+      "price": 500,
+      "userId": "d0e90238-d76c-4f04-9ca0-50c3d99762bb"
+    },
+    {
+      "id": "363b013c-4db4-45f4-b188-7c7533af3e81",
+      "productId": "a44dcda6-4e56-4972-a251-172d3fee1a5e",
+      "label": "Frame",
+      "price": 400,
+      "userId": "d0e90238-d76c-4f04-9ca0-50c3d99762bb"
+    },
+    {
+      "id": "13b895f4-3afb-4ed7-99a5-045218e4143a",
+      "productId": "c3a9ddd5-e952-4d38-a6a7-62cac9327320",
+      "label": "Bottle",
+      "price": 400,
+      "userId": "d0e90238-d76c-4f04-9ca0-50c3d99762bb"
     }
   ]
 }

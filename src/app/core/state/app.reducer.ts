@@ -97,8 +97,9 @@ export function appReducer(state = initialState, action: any): IAppState {
     }
     case addFavorite.type: {
       // state.products.find(x => x.id === action.favorite.);
+
       return {
-        ...state, favorites: [...state.favorites, action.favorite]
+        ...state, favorites: [...state.favorites, action.favorite], products: state.products.map(p => (p.id === action.favorite.productId ? { ...p, isFavorite: true } : p))
       }
     }
     case removeFavorite.type: {

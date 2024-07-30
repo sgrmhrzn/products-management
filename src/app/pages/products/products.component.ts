@@ -20,6 +20,7 @@ import _ from 'lodash';
 import { ProductListComponent } from "../../core/components/product-list/product-list.component";
 import { IProductListConfigModel } from '../../core/models/product-list-config.model';
 import { IQueryParmsModel } from '../../core/models/query-params.model';
+import { PageTypeEnum } from '../../enum/page-type.enum';
 @Component({
   selector: 'app-products',
   standalone: true,
@@ -36,7 +37,7 @@ export class ProductsComponent implements OnInit {
   queryParams$ = this.store.select(selectQueryParams);
   config: IProductListConfigModel = {
     data$: this.products$,
-    title: 'Products',
+    type: PageTypeEnum.Products,
     showActionBtn: true,
     onLoad: (params:IQueryParmsModel) => this.store.dispatch(fetchProductsRequest({ params })),
   }

@@ -63,7 +63,6 @@ export class ProductDrawerComponent implements OnInit {
       } else {
         this.store.dispatch(addProductRequest({ product: { ...this.form.getRawValue(), createdDate: new Date(), id: this.commonService.uuidv4() } }))
       }
-      this.router.navigate(['products']);
     }else{
       this.form.controls.label.markAsDirty();
       this.form.controls.price.markAsDirty();
