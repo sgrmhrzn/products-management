@@ -36,7 +36,8 @@
             <ng-template #actionFavorite>
                 <a nz-tooltip (click)="setFavorite(product)"
                     [nzTooltipTitle]="config.type === pageEnum.Favorites?'Remove favorite':product.isFavorite ?'Favorite':'Add favorite'">
-                    <span nz-icon nzType="heart" [style.color]="'#1890ff'" [nzTheme]="product.isFavorite?'fill':'twotone'"></span>
+                    <span nz-icon nzType="heart" [style.color]="'#1890ff'"
+                        [nzTheme]="product.isFavorite?'fill':'twotone'"></span>
                 </a>
             </ng-template>
             <ng-template #actionDelete>
@@ -52,11 +53,13 @@
         </nz-card>
         }
         }@else {
-        <nz-empty></nz-empty>
+        <div nz-flex nzJustify="center" style="width: 100%;">
+            <nz-empty></nz-empty>
+        </div>
         }
         }
     </div>
-    <div style="height: 20px;">
+    <div style="height: 30px" nz-flex nzJustify="center">
         <nz-spin [hidden]="hideLoader" nzSimple></nz-spin>
     </div>
 </div>

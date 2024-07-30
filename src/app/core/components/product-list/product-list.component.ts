@@ -13,7 +13,7 @@ import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzSpinModule } from 'ng-zorro-antd/spin';
 import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
 import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
-import { debounceTime, delay, firstValueFrom, fromEvent, Observable, of } from 'rxjs';
+import { debounceTime, delay, firstValueFrom, fromEvent, lastValueFrom, map, Observable, of, timer } from 'rxjs';
 import { CommonService } from '../../services/common.service';
 import { IGlobalState, initialState } from '../../state/app.reducer';
 import _ from 'lodash';
@@ -40,7 +40,6 @@ export class ProductListComponent {
   @ViewChild('productsContainer') productsContainer!: ElementRef;
   @Input() config!: IProductListConfigModel;
   favorites$: Observable<IFavoriteProductModel[]> = this.store.select(selectFavorite);
-  // products$: Observable<IProductModel[]> = this.store.select(selectProducts);
   activeUser$ = this.store.select(selectActiveUser);
   queryParams$: Observable<IQueryParmsModel> = this.store.select(selectQueryParams);
 
@@ -103,15 +102,14 @@ export class ProductListComponent {
   }
 
   async scroll(event: any) {
-    if ((event.target.offsetHeight + event.target.scrollTop) >= event.target.scrollHeight) {
+    if ((event.target.offsetHeight + event.target.scrollTop) + 100 >= event.target.scrollHeight) {
       const params = await firstValueFrom(this.queryParams$);
       if (params.pages > params.page) {
-        // this.hideLoader = false;
+        this.hideLoader = false;
 
-        // const result = of().pipe(delay(1000));
-        // result.subscribe(r => {this.hideLoader = true; console.log('hide')});
+        const result = lastValueFrom(timer(500).pipe(map(() => this.hideLoader = true)));
+        await result;
 
-        // this.hideLoader = true;
         this.config.onLoad({ ...params, page: params.page + 1, userEvent: 'scroll' });
       }
     }
