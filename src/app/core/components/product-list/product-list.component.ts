@@ -10,12 +10,13 @@ import { NzFlexModule } from 'ng-zorro-antd/flex';
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzInputModule } from 'ng-zorro-antd/input';
+import { NzSpinModule } from 'ng-zorro-antd/spin';
 import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
-import { debounceTime, firstValueFrom, fromEvent, Observable } from 'rxjs';
+import { debounceTime, firstValueFrom, fromEvent, Observable, of } from 'rxjs';
 import { CommonService } from '../../services/common.service';
 import { IGlobalState, initialState } from '../../state/app.reducer';
 import _ from 'lodash';
-import { updateFavoriteFlag, updateFavoriterRequest, addFavoriteRequest, fetchFavoritesRequest, fetchProductsRequest } from '../../state/app.action';
+import { updateFavoriteFlag, removeFavoriterRequest, addFavoriteRequest, fetchFavoritesRequest, fetchProductsRequest } from '../../state/app.action';
 import { IFavoriteModel, IFavoriteProductModel } from '../../models/favorite.model';
 import { selectActiveUser, selectFavorite, selectProducts, selectQueryParams } from '../../state/app.selectors';
 import { IProductModel } from '../../models/product.model';
@@ -29,19 +30,17 @@ import { RoleEnum } from '../../../enum/role.enum';
   imports: [RouterModule, NzCardModule, NzAvatarModule,
     NzIconModule, NzFlexModule, CommonModule,
     NzEmptyModule, FormsModule, NzInputModule,
-    NzFormModule, ReactiveFormsModule, NzToolTipModule],
+    NzFormModule, ReactiveFormsModule, NzToolTipModule, NzSpinModule],
   templateUrl: './product-list.component.html',
   styleUrl: './product-list.component.scss'
 })
 export class ProductListComponent {
   @ViewChild('productsContainer') productsContainer!: ElementRef;
   @Input() config!: IProductListConfigModel;
-  favorites$: Observable<IFavoriteModel> = this.store.select(selectFavorite);
+  favorites$: Observable<IFavoriteProductModel[]> = this.store.select(selectFavorite);
   // products$: Observable<IProductModel[]> = this.store.select(selectProducts);
   activeUser$ = this.store.select(selectActiveUser);
   queryParams$: Observable<IQueryParmsModel> = this.store.select(selectQueryParams);
-
-  userId: string = "4e1ea1d3-e385-47ec-9344-0995a6804438";
 
   searchForm: FormGroup<{
     keyword: FormControl<string>;
@@ -49,6 +48,7 @@ export class ProductListComponent {
     keyword: ['', []],
   });
   roleEnum = RoleEnum;
+  hideLoader = true;
   constructor(private router: Router, private store: Store<IGlobalState>, private fb: NonNullableFormBuilder, private commonService: CommonService) {
 
   }
@@ -65,20 +65,16 @@ export class ProductListComponent {
 
   async setFavorite(product: IProductModel | IFavoriteProductModel) {
     const favorites = await firstValueFrom(this.favorites$);
-    const newFavorites = _.clone(favorites.products);
+    const user = await firstValueFrom(this.activeUser$);
+    const newFavorites = _.clone(favorites);
     const checkProduct = newFavorites.find(f => f.id === product.id);
     if (checkProduct) {
-      newFavorites.splice(favorites.products.indexOf(product), 1);
-      this.store.dispatch(updateFavoriteFlag({ id: product.id, action: 'remove' }));
+      this.store.dispatch(removeFavoriterRequest({ favorite: checkProduct }));
     } else {
-      newFavorites.push({ id: product.id, label: product.label, price: product.price });
-      this.store.dispatch(updateFavoriteFlag({ id: product.id, action: 'add' }));
+      const fav = { id: this.commonService.uuidv4(), productId: product.id, label: product.label, price: product.price, userId: user?.id || '' };
+      this.store.dispatch(addFavoriteRequest({ favorite: fav }));
     }
-    if (favorites.id) {
-      this.store.dispatch(updateFavoriterRequest({ favorite: { ...favorites, products: newFavorites } }));
-    } else {
-      this.store.dispatch(addFavoriteRequest({ favorite: { id: this.commonService.uuidv4(), userId: this.userId, products: newFavorites } }));
-    }
+
   }
 
   ngAfterViewInit(): void {
@@ -87,28 +83,27 @@ export class ProductListComponent {
     result.subscribe(async x => await this.scroll(x));
   }
   async ngOnInit() {
-    // this.store.dispatch(fetchProductsRequest({ params: initialState.queryParams }));
     const user = await firstValueFrom(this.activeUser$);
-    // this.userId = user?.id || '';
-    // this.store.dispatch(fetchFavoritesRequest({ params: initialState.queryParams }))
+    this.config.onLoad({ ...initialState.queryParams, userId: user?.id });
     this.searchForm.get('keyword')?.valueChanges.pipe(
       debounceTime(500)
     ).subscribe(async value => {
-      console.log(value);
-      // const params = await firstValueFrom(this.queryParams$);
-      this.store.dispatch(this.config.onSearchSubmit(value));
-      // handle the value after 300ms of inactivity
+      // handle the value after 500ms of inactivity
+      this.config.onLoad({ ...initialState.queryParams, userId: user?.id, searchKeyword: value });
     });
-
   }
 
   async scroll(event: any) {
-    console.log(event.target.clientHeight + event.target.scrollTop, event.target.offsetHeight);
-    if ((event.target.clientHeight + event.target.scrollTop) + 100 >= event.target.offsetHeight) {
-      // const pageNumer = this.params.page || 0;
+    if ((event.target.offsetHeight + event.target.scrollTop) >= event.target.scrollHeight) {
       const params = await firstValueFrom(this.queryParams$);
       if (params.pages > params.page) {
-        this.store.dispatch(fetchProductsRequest({ params: { ...params, page: params.page + 1, userEvent: 'scroll' } }));
+        this.hideLoader = false;
+
+        const result = of().pipe(debounceTime(500));
+        result.subscribe(async r => this.hideLoader = true);
+
+        this.hideLoader = true;
+        this.config.onLoad({ ...params, page: params.page + 1, userEvent: 'scroll' });
       }
     }
 

@@ -12,6 +12,7 @@ import { NzBadgeModule } from 'ng-zorro-antd/badge';
 import { NzDescriptionsModule } from 'ng-zorro-antd/descriptions';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IUserModel } from '../../../../core/models/user.model';
+import { RoleEnum } from '../../../../enum/role.enum';
 
 @Component({
   selector: 'app-detail',
@@ -24,6 +25,7 @@ export class DetailComponent implements OnInit {
   // readonly nzModalData = inject(NZ_DRAWER_DATA);
 
   user$!: Observable<IUserModel>;
+  roleEnum = RoleEnum;
 
   constructor(private store: Store<IGlobalState>, private userService: UserService, private router: Router, private activatedRoute: ActivatedRoute) {
 

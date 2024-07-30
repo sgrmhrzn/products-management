@@ -19,33 +19,40 @@
     </div>
 </div>
 
-<div #productsContainer class="product-list" nz-flex [nzGap]="'large'" nzWrap="wrap">
-    @if (config.data$| async; as products) {
-    @if(products.length){
+<div #productsContainer class="product-list" >
+    <div class="inner-wrapper" nz-flex [nzGap]="'large'" nzWrap="wrap">
 
-    @for (product of products; track $index;) {
-    <nz-card style="width:18.3%;height: max-content;" [nzCover]="coverTemplate"
-        [nzActions]="config.showActionBtn && (activeUser$ | async)?.role === roleEnum.Admin? [actionFavorite,actionEdit, actionDelete]:[actionFavorite]">
-        <!-- <img src="https://loremflickr.com/320/240" style="width: 100%;" /> -->
-        <nz-card-meta [nzTitle]="product.label" [nzDescription]="product.price"></nz-card-meta>
-        <ng-template #actionEdit>
-            <span nz-icon nzType="edit" nzTooltipTitle="Edit" (click)="edit(product.id)"></span>
-        </ng-template>
-        <ng-template #actionFavorite>
-            <span nz-icon nzType="heart" [nzTheme]="product.isFavorite?'fill':'outline'" (click)="setFavorite(product)"
-                nzTooltipTitle="Add favorite"></span>
-        </ng-template>
-        <ng-template #actionDelete>
-            <span nz-icon nzType="delete" nzTooltipTitle="Delete"></span>
-        </ng-template>
-        <ng-template #coverTemplate>
-            <img alt="example" src="https://loremflickr.com/320/240" />
-        </ng-template>
-    </nz-card>
-    }
-    }@else {
-    <nz-empty></nz-empty>
-    }
-    }
+        @if (config.data$| async; as products) {
+        @if(products.length){
+
+        @for (product of products; track $index;) {
+        <nz-card style="width:18.3%;height: max-content;" [nzCover]="coverTemplate"
+            [nzActions]="config.showActionBtn && (activeUser$ | async)?.role === roleEnum.Admin? [actionFavorite,actionEdit, actionDelete]:[actionFavorite]">
+            <!-- <img src="https://loremflickr.com/320/240" style="width: 100%;" /> -->
+            <nz-card-meta [nzTitle]="product.label" [nzDescription]="product.price"></nz-card-meta>
+            <ng-template #actionEdit>
+                <span nz-icon nzType="edit" nzTooltipTitle="Edit" (click)="edit(product.id)"></span>
+            </ng-template>
+            <ng-template #actionFavorite>
+                <span nz-icon nzType="heart" [nzTheme]="product.isFavorite?'fill':'outline'"
+                    (click)="setFavorite(product)" nzTooltipTitle="Add favorite"></span>
+            </ng-template>
+            <ng-template #actionDelete>
+                <span nz-icon nzType="delete" nzTooltipTitle="Delete"></span>
+            </ng-template>
+            <ng-template #coverTemplate>
+                <img alt="image" class="thumbnail" [src]="'https://picsum.photos/200/300?random='+ $index + 1"
+                    height="200" width="auto" />
+            </ng-template>
+        </nz-card>
+        }
+        }@else {
+        <nz-empty></nz-empty>
+        }
+        }
+    </div>
+    <div style="height: 20px;">
+        <nz-spin [hidden]="hideLoader" nzSimple></nz-spin>
+    </div>
 </div>
 <router-outlet name="drawer"></router-outlet>

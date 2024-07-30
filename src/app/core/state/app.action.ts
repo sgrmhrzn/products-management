@@ -29,9 +29,9 @@ export const deleteProductRequest = createAction('[Product] delete product reque
 export const updateFavoriteFlag = createAction('[Product] request product favorite flag', props<{ id: string, action: 'add' | 'remove' }>());
 
 export const fetchFavoritesRequest = createAction('[Favorite] request Favorites', props<{ params: IQueryParmsModel }>());
-export const fetchFavoriteSuccess = createAction('[Favorite] request Favorite success', props<{ favorites: IFavoriteModel, params: IQueryParmsModel }>());
-export const addFavorite = createAction('[Favorite] Add Favorite', props<{ favorite: IFavoriteModel }>());
-export const addFavoriteRequest = createAction('[Favorite] Add Favorite request', props<{ favorite: IFavoriteModel }>());
-export const updateFavoriterRequest = createAction('[User] Update Favorite request', props<{ favorite: IFavoriteModel }>());
-export const updateFavorite = createAction('[Favorite] Update Favorite', props<{ favorite: IFavoriteModel }>());
+export const fetchFavoriteSuccess = createAction('[Favorite] request Favorite success', props<{ favorites: IFavoriteProductModel[], params: IQueryParmsModel }>());
+export const addFavorite = createAction('[Favorite] Add Favorite', props<{ favorite: IFavoriteProductModel }>());
+export const addFavoriteRequest = createAction('[Favorite] Add Favorite request', props<{ favorite: IFavoriteProductModel }>());
+export const removeFavoriterRequest = createAction('[User] Update Favorite request', props<{ favorite: IFavoriteProductModel }>());
+export const removeFavorite = createAction('[Favorite] Update Favorite', props<{ favorite: IFavoriteProductModel }>());
 

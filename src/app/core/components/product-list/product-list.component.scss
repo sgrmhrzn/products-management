@@ -2,3 +2,8 @@
     overflow-y: scroll;
     height: calc(100% - 80px);
 }
+
+.thumbnail{
+    object-fit: cover;
+    object-position: center;
+}

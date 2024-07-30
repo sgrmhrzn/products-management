@@ -9,4 +9,6 @@ export interface IFavoriteProductModel {
     label: string;
     price: string;
     isFavorite?: boolean;
+    userId?:string;
+    productId:string;
 }

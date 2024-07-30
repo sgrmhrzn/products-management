@@ -20,7 +20,7 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
 @Component({
   selector: 'app-user-modal',
   standalone: true,
-  imports: [NzModalModule, NzFlexModule, NzButtonModule, CommonModule, FormsModule, ReactiveFormsModule, NzFormModule, NzInputModule, NzDrawerModule, NzSelectModule],
+  imports: [NzModalModule, NzFlexModule, NzButtonModule, CommonModule, FormsModule, ReactiveFormsModule, NzFormModule, NzInputModule, NzDrawerModule, NzSelectModule, NzButtonModule],
   templateUrl: './modal.component.html',
   styleUrl: './modal.component.scss'
 })

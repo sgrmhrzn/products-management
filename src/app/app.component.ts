@@ -34,7 +34,7 @@ export class AppComponent implements OnInit {
     const user = JSON.parse(localStorage.getItem(environment.ACTIVE_USER_KEY) || '');
     if (user) {
       this.store.dispatch(loginRequestSuccess({ user }));
-      this.router.navigateByUrl('products');
+      // this.router.navigateByUrl('products');
     }
   }
 }

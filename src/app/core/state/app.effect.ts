@@ -12,6 +12,7 @@ import _ from "lodash";
 import { ProductService } from "../services/product.service";
 import { IQueryParmsModel } from "../models/query-params.model";
 import { IProductModel } from "../models/product.model";
+import { IFavoriteProductModel } from "../models/favorite.model";
 
 @Injectable()
 /**
@@ -27,7 +28,13 @@ export class AppEffects {
             switchMap(({ params }) =>
                 this.userService.getFavorite(params).pipe(
                     map((response) => {
-                        return actions.fetchFavoriteSuccess({ favorites: response[0], params });
+                        const link = this.commonService.parse_link_header(response.headers.get('link') || '');
+
+                        const queryparams: IQueryParmsModel = {
+                            ...params,
+                            pages: link ? +link["last"].split('_page=')[1] : 1,
+                        }
+                        return actions.fetchFavoriteSuccess({ favorites: response.body as IFavoriteProductModel[], params: queryparams });
                     }),
                     catchError(() => of())
                 )
@@ -41,6 +48,10 @@ export class AppEffects {
             switchMap(({ favorite }) =>
                 this.userService.setFavorite(favorite).pipe(
                     map((response) => {
+                        const msg = `${favorite.label} added to favorite`;
+
+                        this.messageService.success(msg);
+
                         return actions.addFavorite({ favorite });
                     }),
                     catchError(() => of())
@@ -50,13 +61,16 @@ export class AppEffects {
     );
 
 
-    updateFavorite = createEffect(() =>
+    removeFavorite = createEffect(() =>
         this.actions$.pipe(
-            ofType(actions.updateFavoriterRequest),
+            ofType(actions.removeFavoriterRequest),
             switchMap(({ favorite }) =>
-                this.userService.patchFavorite(favorite).pipe(
+                this.userService.delete(favorite).pipe(
                     map((response) => {
-                        return actions.addFavorite({ favorite });
+                        const msg = `${favorite.label} removed from favorite`;
+
+                        this.messageService.success(msg);
+                        return actions.removeFavorite({ favorite });
                     }),
                     catchError(() => of())
                 )
@@ -78,15 +92,9 @@ export class AppEffects {
                 this.productService.getAll(params).pipe(
                     map((response) => {
                         const link = this.commonService.parse_link_header(response.headers.get('link') || '');
-                        // this.first = Link["first"];
-                        // this.last = Link["last"];
-                        // this.prev = Link["prev"];
-                        // this.next = Link["next"];
                         const queryParams: IQueryParmsModel = {
-                            // items: response.items,
+                            ...params,
                             pages: link ? link["last"].split('_page=')[1] : 1,
-                            page: params.page,
-                            searchKeyword: params.searchKeyword
                         }
                         return actions.fetchProductsRequestSuccess({ products: response.body as IProductModel[], queryParams });
                     }),

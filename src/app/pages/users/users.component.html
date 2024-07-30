@@ -23,7 +23,6 @@
                     @if (data.canDelete) {
 
                     <nz-divider nzType="vertical"></nz-divider>
-                    <nz-divider nzType="vertical"></nz-divider>
                     <a nz-popconfirm [nzPopconfirmTitle]="'Are you sure delete '+ data.name + ' user?'"
                         nzPopconfirmPlacement="bottom" (nzOnConfirm)="confirmDelete(data)" nz-tooltip
                         nzTooltipTitle="Delete"><span nz-icon nzType="delete" nzTheme="twotone"

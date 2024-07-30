@@ -2,8 +2,7 @@
     [nzFooter]="nzFooterContent">
     <ng-container *nzDrawerContent>
         @if (user$ | async; as user) {
-        <nz-avatar nz-tooltip [nzSize]="100" [nzText]="user?.name?.charAt(0)"
-            style="color:#f56a00; background-color:#fde3cf;font-size: 46px;"></nz-avatar>
+        <nz-avatar nz-tooltip [nzSize]="100" [nzText]="user?.name?.charAt(0)" class="avatar-lg"></nz-avatar>
         <div class="details">
             <div>Name</div>
             <div class="info"><b>{{user.name}}</b></div>
@@ -12,7 +11,7 @@
             <div>Password</div>
             <div class="info"><b>{{user.password}}</b></div>
             <div>Role</div>
-            <div class="info"><b>{{user.role || '-'}}</b></div>
+            <div class="info"><b>{{roleEnum[user.role || 0] || '-'}}</b></div>
             <div>Joined date</div>
             <div class="info"><b>{{user.createdDate | dateTimeFormat}}</b></div>
         </div>

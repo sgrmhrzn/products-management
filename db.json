@@ -77,6 +77,54 @@
       "createdDate": "2024-07-29T02:08:53.528Z",
       "label": "T-shirt",
       "price": 4000
+    },
+    {
+      "id": "dfcc91b0-23da-4ed0-9de3-0722b9656c76",
+      "createdDate": "2024-07-30T01:11:53.783Z",
+      "label": "Shoe",
+      "price": 1000
+    },
+    {
+      "id": "c90eb522-ea7b-46fb-8f54-e62f37924a7a",
+      "createdDate": "2024-07-30T01:12:16.714Z",
+      "label": "Make up foundation",
+      "price": 5000
+    },
+    {
+      "id": "a5106ad5-9965-4e07-869b-7c9345d30a18",
+      "createdDate": "2024-07-30T01:12:30.799Z",
+      "label": "Hair color",
+      "price": 500
+    },
+    {
+      "id": "86f43d02-c64d-484a-b3b1-4be9e84fe95c",
+      "createdDate": "2024-07-30T01:12:51.226Z",
+      "label": "Mobile",
+      "price": 588
+    },
+    {
+      "id": "fc23021c-d34c-4f4f-866a-061a6d9281b6",
+      "createdDate": "2024-07-30T01:13:30.166Z",
+      "label": "Table fan",
+      "price": 500
+    },
+    {
+      "id": "045877d8-4bc7-42e9-9849-8f545dffa325",
+      "createdDate": "2024-07-30T01:13:48.166Z",
+      "label": "Pen drive",
+      "price": 600
+    },
+    {
+      "id": "a44dcda6-4e56-4972-a251-172d3fee1a5e",
+      "createdDate": "2024-07-30T01:14:12.233Z",
+      "label": "Frame",
+      "price": 400
+    },
+    {
+      "id": "f9107373-a406-4023-af25-9869db110c61",
+      "createdDate": "2024-07-30T01:14:21.786Z",
+      "label": "Mirror",
+      "price": 500
     }
   ],
   "users": [
@@ -100,38 +148,88 @@
   ],
   "favorites": [
     {
-      "id": "e5796595-40ad-4f58-9908-36577eabcd0c",
-      "userId": "4e1ea1d3-e385-47ec-9344-0995a6804438",
-      "products": [
-        {
-          "id": "1570d4b3-bfd7-4b19-b862-bd9556d7bfb3",
-          "label": "Mouse",
-          "price": "499",
-          "isFavorite": true
-        },
-        {
-          "id": "55f525d6-6ea1-4810-8ae2-f52f56d423dc",
-          "label": "Cycle",
-          "price": 50000,
-          "isFavorite": true
-        },
-        {
-          "id": "f86bc0db-d0dc-431b-a40a-c1172b8e2ad9",
-          "label": "Wai wai",
-          "price": 50
-        }
-      ]
+      "id": "0e446ab8-4bdf-4daf-8394-fd38e10657b0",
+      "productId": "3b6d165d-298d-467c-82cd-300072c824d2",
+      "label": "Logitech",
+      "price": "300",
+      "userId": "4e1ea1d3-e385-47ec-9344-0995a6804438"
     },
     {
-      "id": "b677487b-1d30-4025-a99c-1501ef9695cd",
-      "userId": "4e1ea1d3-e385-47ec-9344-0995a6804438",
-      "products": [
-        {
-          "id": "f86bc0db-d0dc-431b-a40a-c1172b8e2ad9",
-          "label": "Wai wai",
-          "price": 50
-        }
-      ]
+      "id": "a4599fe9-e918-46f0-ad7a-a72a0170d21b",
+      "productId": "1570d4b3-bfd7-4b19-b862-bd9556d7bfb3",
+      "label": "Mouse",
+      "price": "499",
+      "userId": "4e1ea1d3-e385-47ec-9344-0995a6804438"
+    },
+    {
+      "id": "77571f64-2122-4605-8f72-bd6d9d8c2394",
+      "productId": "77a52f67-433f-4d0a-9a31-03e8f300dcf3",
+      "label": "Head phone",
+      "price": 499,
+      "userId": "4e1ea1d3-e385-47ec-9344-0995a6804438"
+    },
+    {
+      "id": "4afee56c-78ae-4e36-8e4b-d0bf39b1188c",
+      "productId": "c3a9ddd5-e952-4d38-a6a7-62cac9327320",
+      "label": "Bottle",
+      "price": 400,
+      "userId": "4e1ea1d3-e385-47ec-9344-0995a6804438"
+    },
+    {
+      "id": "04d7877c-0719-404d-81ed-a583ed1aaf3a",
+      "productId": "a3bb9cc7-7b53-409d-bf38-1b43ef3c83c3",
+      "label": "Laptop",
+      "price": 100000,
+      "userId": "4e1ea1d3-e385-47ec-9344-0995a6804438"
+    },
+    {
+      "id": "b380d6b2-dce2-4485-bfa8-c10c291c951f",
+      "productId": "af65d3dd-a201-4ea0-b338-3da640f1fdb5",
+      "label": "Fan",
+      "price": 4000,
+      "userId": "4e1ea1d3-e385-47ec-9344-0995a6804438"
+    },
+    {
+      "id": "74e145f9-4789-41a2-bd79-b898ccf6e7bb",
+      "productId": "93258f0c-8eb2-4600-99fd-0cc9879aa559",
+      "label": "Toy",
+      "price": 55,
+      "userId": "4e1ea1d3-e385-47ec-9344-0995a6804438"
+    },
+    {
+      "id": "384da64c-13c3-4b23-aadf-c5626d73a36f",
+      "productId": "a3646d96-55bf-4cb0-975d-a7433a08be7e",
+      "label": "Doll",
+      "price": 500,
+      "userId": "4e1ea1d3-e385-47ec-9344-0995a6804438"
+    },
+    {
+      "id": "1d42e6b0-0eb3-4553-9d2a-acaae929ce3a",
+      "productId": "f33c63b9-8dd5-48fc-908c-fdbae217e31e",
+      "label": "Wheel",
+      "price": 500,
+      "userId": "4e1ea1d3-e385-47ec-9344-0995a6804438"
+    },
+    {
+      "id": "f6613c13-e1d5-4536-9cd6-094f7718f9c0",
+      "productId": "f86bc0db-d0dc-431b-a40a-c1172b8e2ad9",
+      "label": "Wai wai",
+      "price": 50,
+      "userId": "4e1ea1d3-e385-47ec-9344-0995a6804438"
+    },
+    {
+      "id": "7dd45aea-e215-4087-8954-4350a7a64005",
+      "productId": "b3bbecf5-f003-4944-9745-ce764807f810",
+      "label": "Noodle",
+      "price": 55,
+      "userId": "4e1ea1d3-e385-47ec-9344-0995a6804438"
+    },
+    {
+      "id": "b9a1486c-5790-4378-aee4-1916d815f4ca",
+      "productId": "55f525d6-6ea1-4810-8ae2-f52f56d423dc",
+      "label": "Cycle",
+      "price": 50000,
+      "userId": "4e1ea1d3-e385-47ec-9344-0995a6804438"
     }
   ]
 }

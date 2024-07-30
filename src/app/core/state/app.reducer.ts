@@ -1,9 +1,9 @@
 import _ from "lodash";
-import { addFavorite, addProduct, addUser, deleteProduct, deleteUser, fetchFavoriteSuccess, fetchProductsRequestSuccess, fetchUsersRequestSuccess, loginRequestSuccess, updateFavoriteFlag, updateProduct, updateUser } from "./app.action";
+import { addFavorite, addProduct, addUser, deleteProduct, deleteUser, fetchFavoriteSuccess, fetchProductsRequestSuccess, fetchUsersRequestSuccess, loginRequestSuccess, removeFavorite, updateFavoriteFlag, updateProduct, updateUser } from "./app.action";
 import { IActiveUserModel, IUserModel } from "../models/user.model";
 import { IProductModel } from "../models/product.model";
 import { IQueryParmsModel } from "../models/query-params.model";
-import { IFavoriteModel } from "../models/favorite.model";
+import { IFavoriteModel, IFavoriteProductModel } from "../models/favorite.model";
 
 /**
  * Global state of store
@@ -17,7 +17,7 @@ export interface IGlobalState {
  */
 export interface IAppState {
   products: IProductModel[];
-  favorites: IFavoriteModel;
+  favorites: IFavoriteProductModel[];
   queryParams: IQueryParmsModel;
   users: IUserModel[];
   activeUser?: IActiveUserModel;
@@ -29,11 +29,7 @@ export interface IAppState {
  */
 export const initialState: IAppState = {
   products: [],
-  favorites: {
-    id: '',
-    products: [],
-    userId: ''
-  },
+  favorites: [],
   queryParams: {
     searchKeyword: '',
     page: 1,
@@ -41,7 +37,7 @@ export const initialState: IAppState = {
     itemLimit: 10,
     pages: 0,
     userEvent: '',
-    userId:"4e1ea1d3-e385-47ec-9344-0995a6804438"
+    userId: ''
   },
   users: [],
   activeUser: {},
@@ -102,7 +98,15 @@ export function appReducer(state = initialState, action: any): IAppState {
     case addFavorite.type: {
       // state.products.find(x => x.id === action.favorite.);
       return {
-        ...state, favorites: action.favorite
+        ...state, favorites: [...state.favorites, action.favorite]
+      }
+    }
+    case removeFavorite.type: {
+      const cloned = _.cloneDeep(state.favorites);
+      _.remove(cloned, { id: action.favorite.id });
+
+      return {
+        ...state, favorites: cloned
       }
     }
     case updateFavoriteFlag.type: {
@@ -111,9 +115,9 @@ export function appReducer(state = initialState, action: any): IAppState {
       }
     }
     case fetchFavoriteSuccess.type: {
-      const favProducts = action.params.userEvent === 'scroll' ? [...state.products, ...action.products] : action.favorites.products;
+      const favProducts = action.params.userEvent === 'scroll' ? [...state.favorites, ...action.favorites] : action.favorites;
       return {
-        ...state, favorites: { ...action.favorites, products: _.clone(favProducts).map((x: any) => { return { ...x, isFavorite: true } }) }
+        ...state, favorites: _.clone(favProducts).map((x: any) => { return { ...x, isFavorite: true } },), queryParams: action.params
       }
     }
     default:
