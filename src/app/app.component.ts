@@ -24,9 +24,13 @@ export class AppComponent implements OnInit {
 
   }
   ngOnInit(): void {
-    const user = JSON.parse(localStorage.getItem(environment.ACTIVE_USER_KEY) || '');
-    if (user) {
-      this.store.dispatch(loginRequestSuccess({ user }));
+    const session = localStorage.getItem(environment.ACTIVE_USER_KEY) || '';
+    if (session) {
+
+      const user = JSON.parse(session);
+      if (user) {
+        this.store.dispatch(loginRequestSuccess({ user }));
+      }
     }
   }
 }

@@ -22,7 +22,7 @@ import { IProductModel } from '../../../../core/models/product.model';
 /**
  * add, edit product drawer component
  */
-export class ProductDrawerComponent implements OnInit, OnDestroy {
+export class ProductDrawerComponent implements OnInit {
   visible = true;
   form: FormGroup<{
     id: FormControl<string>;
@@ -35,8 +35,6 @@ export class ProductDrawerComponent implements OnInit, OnDestroy {
     label: ['', [Validators.required, Validators.maxLength(25)]],
     price: ['', [Validators.required, Validators.maxLength(6), Validators.max(999999), Validators.min(1)]],
   });
-  sub!: Subscription;
-
 
   constructor(private router: Router, private activatedRoute: ActivatedRoute, private fb: NonNullableFormBuilder, private store: Store<IGlobalState>, private commonService: CommonService) {
 
@@ -80,9 +78,5 @@ export class ProductDrawerComponent implements OnInit, OnDestroy {
       this.form.controls.label.markAsDirty();
       this.form.controls.price.markAsDirty();
     }
-  }
-
-  ngOnDestroy(): void {
-    this.sub.unsubscribe();
   }
 }
