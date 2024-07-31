@@ -8,5 +8,5 @@ export const AUTH_ROUTES: Routes = [
   { path: 'favorites', canActivate: [NavGuard], loadChildren: () => import('./../../../pages/favorites/favorites.routes').then(m => m.FAVORITES_ROUTES) },
   { path: 'users', canActivate: [NavGuard], loadChildren: () => import('./../../../pages/users/users.routes').then(m => m.USERS_ROUTES) },
   { path: 'unauthorized', component: ErrorComponent },
-  { path: '**', component: ErrorComponent },
+  { path: '**', component: ErrorComponent }
 ];
