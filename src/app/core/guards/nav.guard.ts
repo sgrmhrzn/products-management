@@ -14,7 +14,7 @@ export const NavGuard: CanActivateFn = (route, state) => {
   if (localStorage.getItem(environment.ACTIVE_USER_KEY)) {
     const user = JSON.parse(localStorage.getItem(environment.ACTIVE_USER_KEY) || '');
     //check if the user is admin for users page
-    if (+user.role !== RoleEnum.Admin && state.url.includes('users')) {
+    if (+user.role !== RoleEnum.Admin && state.url.includes('users') || +user.role !== RoleEnum.Admin && state.url.includes('add') || +user.role !== RoleEnum.Admin && state.url.includes('edit')) {
       router.navigateByUrl('unauthorized');
       return false;
     }
