@@ -1,4 +1,4 @@
-<nz-drawer [nzClosable]="false" [nzVisible]="visible" nzPlacement="right" nzTitle="Basic Drawer" (nzOnClose)="close()"
+<nz-drawer [nzClosable]="false" [nzVisible]="visible" nzPlacement="right" [nzTitle]="form.value.id?'Update product':'Add product'" (nzOnClose)="close()"
     [nzFooter]="nzFooterContent">
     <ng-container *nzDrawerContent>
         <form nz-form [formGroup]="form" nzLayout="vertical" class="login-form">

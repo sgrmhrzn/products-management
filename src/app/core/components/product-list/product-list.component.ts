@@ -50,7 +50,7 @@ export class ProductListComponent {
   });
   roleEnum = RoleEnum;
   pageEnum = PageTypeEnum;
-  hideLoader = true;
+  hideLoader = false;
   constructor(private router: Router, private store: Store<IGlobalState>, private fb: NonNullableFormBuilder, private commonService: CommonService) {
 
   }
@@ -92,7 +92,8 @@ export class ProductListComponent {
   }
   async ngOnInit() {
     const user = await firstValueFrom(this.activeUser$);
-    this.config.onLoad({ ...initialState.queryParams, userId: user?.id });
+    this.onLoad({ ...initialState.queryParams, userId: user?.id });
+
     this.searchForm.get('keyword')?.valueChanges.pipe(
       debounceTime(500)
     ).subscribe(async value => {
@@ -105,14 +106,19 @@ export class ProductListComponent {
     if ((event.target.offsetHeight + event.target.scrollTop) + 100 >= event.target.scrollHeight) {
       const params = await firstValueFrom(this.queryParams$);
       if (params.pages > params.page) {
-        this.hideLoader = false;
 
-        const result = lastValueFrom(timer(500).pipe(map(() => this.hideLoader = true)));
-        await result;
-
-        this.config.onLoad({ ...params, page: params.page + 1, userEvent: 'scroll' });
+        this.onLoad({ ...params, page: params.page + 1, userEvent: 'scroll' });
       }
     }
 
+  }
+
+  async onLoad(params: IQueryParmsModel) {
+    this.hideLoader = false;
+
+    const result = lastValueFrom(timer(500).pipe(map(() => this.hideLoader = true)));
+    await result;
+
+    this.config.onLoad(params);
   }
 }

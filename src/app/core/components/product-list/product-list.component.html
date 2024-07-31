@@ -21,7 +21,7 @@
     <div class="inner-wrapper" nz-flex [nzGap]="'large'" nzWrap="wrap">
 
         @if (config.data$| async; as products) {
-        @if(products.length){
+        @if(products.length && products){
 
         @for (product of products; track $index;) {
         <nz-card style="width:18.3%;height: max-content;" [nzCover]="coverTemplate"
@@ -52,12 +52,13 @@
             </ng-template>
         </nz-card>
         }
-        }@else {
+        }@else if(hideLoader){
         <div nz-flex nzJustify="center" style="width: 100%;">
             <nz-empty></nz-empty>
         </div>
         }
         }
+        
     </div>
     <div style="height: 30px" nz-flex nzJustify="center">
         <nz-spin [hidden]="hideLoader" nzSimple></nz-spin>

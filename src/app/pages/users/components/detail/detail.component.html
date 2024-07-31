@@ -1,4 +1,4 @@
-<nz-drawer [nzClosable]="false" [nzVisible]="true" nzPlacement="right" nzTitle="User" (nzOnClose)="close()"
+<nz-drawer [nzClosable]="false" [nzVisible]="true" nzPlacement="right" nzTitle="User detail" (nzOnClose)="close()"
     [nzFooter]="nzFooterContent">
     <ng-container *nzDrawerContent>
         @if (user$ | async; as user) {

@@ -28,7 +28,7 @@
       "id": "a3bb9cc7-7b53-409d-bf38-1b43ef3c83c3",
       "createdDate": "2024-07-27T03:08:01.111Z",
       "label": "Laptop",
-      "price": 100000
+      "price": 100
     },
     {
       "id": "af65d3dd-a201-4ea0-b338-3da640f1fdb5",
@@ -138,12 +138,13 @@
       "role": 0
     },
     {
-      "id": "d0e90238-d76c-4f04-9ca0-50c3d99762bb",
-      "name": "rshakya",
+      "id": "66ab7296-9f7a-4ba0-9828-7cecd0bcd15f",
+      "name": "John Papa",
+      "role": "1",
       "canDelete": true,
-      "username": "rshakya",
+      "username": "john",
       "password": "123456",
-      "createdDate": "2024-07-29T02:20:53.177Z"
+      "createdDate": "2024-07-31T00:40:12.793Z"
     }
   ],
   "favorites": [
@@ -230,27 +231,6 @@
       "label": "Cycle",
       "price": 50000,
       "userId": "4e1ea1d3-e385-47ec-9344-0995a6804438"
-    },
-    {
-      "id": "ce375f59-e39a-4963-a414-db14c762d119",
-      "productId": "f9107373-a406-4023-af25-9869db110c61",
-      "label": "Mirror",
-      "price": 500,
-      "userId": "d0e90238-d76c-4f04-9ca0-50c3d99762bb"
-    },
-    {
-      "id": "363b013c-4db4-45f4-b188-7c7533af3e81",
-      "productId": "a44dcda6-4e56-4972-a251-172d3fee1a5e",
-      "label": "Frame",
-      "price": 400,
-      "userId": "d0e90238-d76c-4f04-9ca0-50c3d99762bb"
-    },
-    {
-      "id": "13b895f4-3afb-4ed7-99a5-045218e4143a",
-      "productId": "c3a9ddd5-e952-4d38-a6a7-62cac9327320",
-      "label": "Bottle",
-      "price": 400,
-      "userId": "d0e90238-d76c-4f04-9ca0-50c3d99762bb"
     }
   ]
 }

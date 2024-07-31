@@ -152,7 +152,7 @@ export class AppEffects {
             ofType(actions.updateProductRequest),
             switchMap(({ product }) =>
                 this.productService.getProductByLabel(product.label).pipe(concatMap(r => {
-                    if (r.length) {
+                    if (r.length && r[0].id !== product.id) {
                         this.messageService.error(`${product.label} already exists`);
                         return of();
                     } else {

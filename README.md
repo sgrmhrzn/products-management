@@ -31,7 +31,17 @@ Run `ng generate component component-name` to generate a new component. You can 
 
 Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
 
+## Credentials
+Super admin users
+Username: sadmin
+Password: 123456
+
+Normal user
+Username: john
+Password: 123456
+
+
 ## Snapshots
-![alt text](https://github.com/sgrmhrzn/role-managment/blob/main/src/assets/image1.jpg)
-![alt text](https://github.com/sgrmhrzn/role-managment/blob/main/src/assets/image2.jpg)
-![alt text](https://github.com/sgrmhrzn/role-managment/blob/main/src/assets/image3.jpg)
+![alt text](https://github.com/sgrmhrzn/role-managment/blob/main/src/assets/1.jpg)
+![alt text](https://github.com/sgrmhrzn/role-managment/blob/main/src/assets/2.jpg)
+![alt text](https://github.com/sgrmhrzn/role-managment/blob/main/src/assets/3.jpg)

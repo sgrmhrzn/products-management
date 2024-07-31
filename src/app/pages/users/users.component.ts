@@ -16,6 +16,7 @@ import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
 import { CommonModule } from '@angular/common';
 import { NzFlexModule } from 'ng-zorro-antd/flex';
 import { Router, RouterModule } from '@angular/router';
+import { RoleEnum } from '../../enum/role.enum';
 
 @Component({
   selector: 'app-users',
@@ -31,46 +32,13 @@ export class UsersComponent {
   //fetch all available users
   users$: Observable<IUserModel[]> = this.store.select(selectUsers);
   activeUser$ = this.store.select(selectActiveUser);
-  // permissionEnum = PermissionsEnums;
-  // permission = {
-  //   add: false,
-  //   update: false,
-  //   delete: false
-  // }
+  roleEnum = RoleEnum;
   constructor(private drawerService: NzDrawerService, private store: Store<IGlobalState>, private router: Router) {
 
   }
 
   async ngOnInit() {
     this.store.dispatch(fetchUsersRequest());
-
-    // //permission handling
-    // const user = await firstValueFrom(this.activeUser$);
-    // if (user?.permissions?.includes(PermissionsEnums.StaffsAllPrivilege)) {
-    //   this.permission = {
-    //     add: true,
-    //     update: true,
-    //     delete: true
-    //   }
-    // } else {
-    //   if (user?.permissions?.includes(PermissionsEnums.StaffsAllActionPrivilege)) {
-    //     this.permission = {
-    //       add: true,
-    //       update: true,
-    //       delete: true
-    //     }
-    //   } else {
-
-    //     if (user?.permissions?.includes(PermissionsEnums.StaffsAddPrivilege)) {
-    //       this.permission.add = true;
-    //     } if (user?.permissions?.includes(PermissionsEnums.StaffsEditPrivilege)) {
-    //       this.permission.update = true;
-    //     } if (user?.permissions?.includes(PermissionsEnums.StaffsDeletePrivilege)) {
-    //       this.permission.delete = true;
-    //     }
-    //   }
-
-    // }
   }
 
 
@@ -88,14 +56,6 @@ export class UsersComponent {
  */
   addUser() {
     this.router.navigate(['users', { outlets: { drawer: ['add'] } }]);
-
-    // const drawerOptions: NzDrawerOptions = {
-    //   nzContent: DetailComponent,
-    //   nzSize: 'default',
-    //   nzTitle: `View Staff - ${user.name}`,
-    //   nzData: { ...user },
-    // }
-    // this.drawerRef = this.drawerService.create(drawerOptions);
   }
 
   viewDetails(id: string) {

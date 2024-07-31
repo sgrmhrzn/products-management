@@ -13,11 +13,12 @@ import { NzDescriptionsModule } from 'ng-zorro-antd/descriptions';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IUserModel } from '../../../../core/models/user.model';
 import { RoleEnum } from '../../../../enum/role.enum';
+import { NzButtonModule } from 'ng-zorro-antd/button';
 
 @Component({
   selector: 'app-detail',
   standalone: true,
-  imports: [NzDescriptionsModule, NzBadgeModule, CommonModule, NzAvatarModule, DateTimeFormatPipe, NzDrawerModule],
+  imports: [NzDescriptionsModule, NzBadgeModule, CommonModule, NzAvatarModule, DateTimeFormatPipe, NzDrawerModule, NzButtonModule],
   templateUrl: './detail.component.html',
   styleUrl: './detail.component.scss'
 })
