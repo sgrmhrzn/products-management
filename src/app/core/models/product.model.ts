@@ -1,4 +1,4 @@
-import { IQueryParmsModel } from "./query-params.model";
+import { IQueryParamsModel } from "./query-params.model";
 
 export interface IProductModel {
     id: string;
@@ -8,6 +8,6 @@ export interface IProductModel {
     isFavorite?: boolean;
 }
 
-export interface IQueryProductModel extends IQueryParmsModel {
+export interface IQueryProductModel extends IQueryParamsModel {
     data: IProductModel[];
 }

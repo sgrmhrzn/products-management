@@ -1,4 +1,7 @@
-export interface IQueryParmsModel {
+/**
+ * query parameter model to request with filtered data
+ */
+export interface IQueryParamsModel {
     searchKeyword?: string;
     page: number;
     items?: number;

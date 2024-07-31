@@ -4,15 +4,16 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import * as actions from "./app.action";
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { UserService } from "../services/user.service";
-import { IUserAssignModel, IUserModel } from "../models/user.model";
+import { IUserModel } from "../models/user.model";
 import { environment } from "../../../environments/environment";
 import { Router } from "@angular/router";
 import { CommonService } from "../services/common.service";
 import _ from "lodash";
 import { ProductService } from "../services/product.service";
-import { IQueryParmsModel } from "../models/query-params.model";
+import { IQueryParamsModel } from "../models/query-params.model";
 import { IProductModel } from "../models/product.model";
 import { IFavoriteProductModel } from "../models/favorite.model";
+import { FavoriteService } from "../services/favorite.service";
 
 @Injectable()
 /**
@@ -22,15 +23,18 @@ import { IFavoriteProductModel } from "../models/favorite.model";
  * */
 export class AppEffects {
 
+    /**
+     * fetch favorite products
+     */
     fetchFavorite = createEffect(() =>
         this.actions$.pipe(
             ofType(actions.fetchFavoritesRequest),
             switchMap(({ params }) =>
-                this.userService.getFavorite(params).pipe(
+                this.favoriteService.getFavorite(params).pipe(
                     map((response) => {
                         const link = this.commonService.parse_link_header(response.headers.get('link') || '');
 
-                        const queryparams: IQueryParmsModel = {
+                        const queryparams: IQueryParamsModel = {
                             ...params,
                             pages: link ? +link["last"].split('_page=')[1] : 1,
                         }
@@ -42,11 +46,14 @@ export class AppEffects {
         )
     );
 
+    /**
+     * set new favorite product
+     */
     setFavorite = createEffect(() =>
         this.actions$.pipe(
             ofType(actions.addFavoriteRequest),
             switchMap(({ favorite }) =>
-                this.userService.setFavorite(favorite).pipe(
+                this.favoriteService.setFavorite(favorite).pipe(
                     map((response) => {
                         const msg = `${favorite.label} added to favorite`;
 
@@ -60,12 +67,14 @@ export class AppEffects {
         )
     );
 
-
+    /**
+     * remove existing favorite product
+     */
     removeFavorite = createEffect(() =>
         this.actions$.pipe(
             ofType(actions.removeFavoriterRequest),
             switchMap(({ favorite }) =>
-                this.userService.delete(favorite).pipe(
+                this.favoriteService.delete(favorite).pipe(
                     map((response) => {
                         const msg = `${favorite.label} removed from favorite`;
 
@@ -92,25 +101,22 @@ export class AppEffects {
                 this.productService.getAll(params).pipe(
                     mergeMap((response) => {
                         const link = this.commonService.parse_link_header(response.headers.get('link') || '');
-                        const queryParams: IQueryParmsModel = {
+                        const queryParams: IQueryParamsModel = {
                             ...params,
                             pages: link ? link["last"].split('_page=')[1] : 1,
                         }
                         const list = new Array<Observable<any>>();
                         response.body?.forEach(x => {
-                            list.push(this.userService.isFavorite(params.userId || '', x.id).pipe(map(p => p[0])));
-                            // .pipe(map(res => {
-                            //     x.isFavorite = res ? true : false;
-                            // }),
-                            //     catchError(() => of())
-                            // ))
+                            list.push(this.favoriteService.isFavorite(params.userId || '', x.id).pipe(map(p => p[0])));
                         })
-                        // concatMap(res =>
-                        return forkJoin(list).pipe(map(res => {
-                            response.body?.map(x => x.isFavorite = res.find(y => y?.productId === x.id) ? true : false);
-                            return actions.fetchProductsRequestSuccess({ products: response.body as IProductModel[], queryParams });
-                        }));
-                        // ))
+                        if (list?.length) {
+                            return forkJoin(list).pipe(map(res => {
+                                response.body?.map(x => x.isFavorite = res.find(y => y?.productId === x.id) ? true : false);
+                                return actions.fetchProductsRequestSuccess({ products: response.body as IProductModel[], queryParams });
+                            }));
+                        } else {
+                            return of({}).pipe(map(() => actions.fetchProductsRequestSuccess({ products: response.body as IProductModel[], queryParams })))
+                        }
                     })
                 )
             )
@@ -118,7 +124,7 @@ export class AppEffects {
     );
 
     /**
-     * Add new product and log activity
+     * Add new product
      */
     addProductRequest = createEffect(() =>
         this.actions$.pipe(
@@ -145,7 +151,7 @@ export class AppEffects {
     );
 
     /**
-     * Update product and log activity
+     * Update product
      */
     updateProductRequest = createEffect(() =>
         this.actions$.pipe(
@@ -170,7 +176,7 @@ export class AppEffects {
     );
 
     /**
-     * Delete product and log activity
+     * Delete product
      */
     deleteProductRequest = createEffect(() =>
         this.actions$.pipe(
@@ -206,7 +212,7 @@ export class AppEffects {
         )
     );
     /**
-     * Add new user and log activity
+     * Add new user
      */
     addUserRequest = createEffect(() =>
         this.actions$.pipe(
@@ -228,7 +234,7 @@ export class AppEffects {
     );
 
     /**
-     * Update user and log activity
+     * Update user
      */
     updateUserRequest = createEffect(() =>
         this.actions$.pipe(
@@ -245,14 +251,14 @@ export class AppEffects {
     );
 
     /**
-     * Delete user and log activity
+     * Delete user
      */
     deleteUserRequest = createEffect(() =>
         this.actions$.pipe(
             ofType(actions.deleteUserRequest),
             switchMap(({ user }) =>
                 this.userService.deleteUser(user.id).pipe(map((response) => {
-                    const msg = `${response.name} user deleted`;
+                    const msg = `${user.name} user deleted`;
                     this.messageService.success(msg);
                     return actions.deleteUser({ id: user.id });
                 })
@@ -263,7 +269,7 @@ export class AppEffects {
     //#endregion
 
     /**
-     * Request login, check user credentials, fetch assigned product and permissions of logged in user  
+     * Request login, check user credentials
      */
     loginRequest = createEffect(() =>
         this.actions$.pipe(
@@ -271,29 +277,15 @@ export class AppEffects {
             switchMap(({ user }) =>
                 this.userService.checkUser(user).pipe(map((userData: Array<IUserModel>) => {
                     if (userData.length) {
-                        // return this.userService.getAllAssignedProductsUsers().pipe(map(d => d.filter(f => f.userIds.includes(userData[0].id))), mergeMap((productData: IUserAssignModel[]) => {
-                        // if (productData.length) {
 
-                        //     return this.productService.getProductPermissons(productData[0].product.id).pipe(
-                        //         map((permissionData) => {
                         this.messageService.success(`Log in successful`);
                         const user = { id: userData[0].id, name: userData[0].name, role: userData[0].role, username: userData[0].username };
                         localStorage.setItem(environment.ACTIVE_USER_KEY, JSON.stringify(user));
                         this.router.navigateByUrl('products');
                         return actions.loginRequestSuccess({ user });
-                        //         }),
-                        //         catchError((error) => { return throwError(() => new Error(`Error - ${error}`)) })
-                        //     )
-                        // } else {
-                        //     this.messageService.error("Product hasn't been assigned to this user. Please contact administrator.");
-                        //     return throwError(() => new Error('Username or password incorrect.'))
-                        // }
-                        // }),
 
-                        // )
                     } else {
                         this.messageService.error('Username or password incorrect.');
-                        // return throwError(() => new Error('Username or password incorrect.'))
                         return actions.loginRequestSuccess({ user });
 
                     }
@@ -313,12 +305,14 @@ export class AppEffects {
      * @param userService UserService
      * @param commonService CommonService
      * @param router Router
+     * @param favoriteService FavoriteService
      */
     constructor(private actions$: Actions,
         private messageService: NzMessageService,
         private userService: UserService,
         private commonService: CommonService,
         private productService: ProductService,
-        private router: Router
+        private router: Router,
+        private favoriteService: FavoriteService
     ) { }
 }

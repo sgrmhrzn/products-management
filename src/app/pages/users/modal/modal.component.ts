@@ -25,11 +25,9 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
   styleUrl: './modal.component.scss'
 })
 /**
- * Modal component to add & edit role
+ * Modal component to add & edit user
  */
 export class ModalComponent implements OnInit {
-  // readonly #modal = inject(NzModalRef);
-  // readonly nzModalData: IRoleModel = inject(NZ_MODAL_DATA);
   id!: string;
   form: FormGroup<{
     id: FormControl<string>;
@@ -43,8 +41,6 @@ export class ModalComponent implements OnInit {
 
   isEdit = false;
   current = 0;
-  // checkRoleTitle$!: Observable<IRoleModel | undefined>;
-
   constructor(private fb: NonNullableFormBuilder,
     private store: Store<IGlobalState>,
     private messageService: NzMessageService,
@@ -55,10 +51,15 @@ export class ModalComponent implements OnInit {
   }
 
   async ngOnInit() {
+    
+  }
+
+  /**
+   * if id exist check if user exist and patch to form
+   */
+  async checkIfProductExistAndPatchToForm(){
     const res = await firstValueFrom(this.activatedRoute.paramMap);
     const id = res.get('id') || '';
-    // const product = await firstValueFrom(this.store.select(selectProductById(id)));
-    // this.form.patchValue(product as IProductModel);
     const user = await firstValueFrom(this.store.select(selectUserById(id)));
     if (this.id) {
       this.form.patchValue(user);
@@ -67,13 +68,6 @@ export class ModalComponent implements OnInit {
       this.form.get('id')?.setValue(this.commonService.uuidv4());
     }
 
-    // this.form.valueChanges.subscribe(value => {
-    //   if (this.form.valid) {
-    //     this.#modal.updateConfig({ nzOkDisabled: false });
-    //   } else {
-    //     this.#modal.updateConfig({ nzOkDisabled: true });
-    //   }
-    // })
   }
 
   handleCancel(): void {
@@ -97,7 +91,8 @@ export class ModalComponent implements OnInit {
           password: '123456',
           createdDate: new Date()
         }
-        this.store.dispatch(addUserRequest({ user: newUser }))
+        this.store.dispatch(addUserRequest({ user: newUser }));
+        this.router.navigateByUrl('users');
       }
     } else {
       this.form.controls.name.markAsDirty();

@@ -1,12 +1,6 @@
 {
   "products": [
     {
-      "id": "3b6d165d-298d-467c-82cd-300072c824d2",
-      "createdDate": "2024-07-27T01:31:24.442Z",
-      "label": "Logitech",
-      "price": "300"
-    },
-    {
       "id": "1570d4b3-bfd7-4b19-b862-bd9556d7bfb3",
       "createdDate": "2024-07-27T01:31:50.931Z",
       "label": "Mouse",
@@ -125,6 +119,12 @@
       "createdDate": "2024-07-30T01:14:21.786Z",
       "label": "Mirror",
       "price": 500
+    },
+    {
+      "id": "84db21c7-6827-4c0a-800c-2cbfeb810ca8",
+      "createdDate": "2024-07-31T01:13:13.241Z",
+      "label": "bag",
+      "price": 2500
     }
   ],
   "users": [
@@ -148,13 +148,6 @@
     }
   ],
   "favorites": [
-    {
-      "id": "0e446ab8-4bdf-4daf-8394-fd38e10657b0",
-      "productId": "3b6d165d-298d-467c-82cd-300072c824d2",
-      "label": "Logitech",
-      "price": "300",
-      "userId": "4e1ea1d3-e385-47ec-9344-0995a6804438"
-    },
     {
       "id": "a4599fe9-e918-46f0-ad7a-a72a0170d21b",
       "productId": "1570d4b3-bfd7-4b19-b862-bd9556d7bfb3",
@@ -219,17 +212,31 @@
       "userId": "4e1ea1d3-e385-47ec-9344-0995a6804438"
     },
     {
-      "id": "7dd45aea-e215-4087-8954-4350a7a64005",
-      "productId": "b3bbecf5-f003-4944-9745-ce764807f810",
-      "label": "Noodle",
-      "price": 55,
+      "id": "ad96fee2-6414-48b5-b2fb-3e0fb92c854d",
+      "productId": "84db21c7-6827-4c0a-800c-2cbfeb810ca8",
+      "label": "bag",
+      "price": 2500,
       "userId": "4e1ea1d3-e385-47ec-9344-0995a6804438"
     },
     {
-      "id": "b9a1486c-5790-4378-aee4-1916d815f4ca",
-      "productId": "55f525d6-6ea1-4810-8ae2-f52f56d423dc",
-      "label": "Cycle",
-      "price": 50000,
+      "id": "eae5a922-3afd-4641-a2b7-7c5d74fc8593",
+      "productId": "045877d8-4bc7-42e9-9849-8f545dffa325",
+      "label": "Pen drive",
+      "price": 600,
+      "userId": "4e1ea1d3-e385-47ec-9344-0995a6804438"
+    },
+    {
+      "id": "a1c6970b-b4c0-4232-af2d-de4c25ce8a54",
+      "productId": "2391d59f-afee-4221-ae7b-223efb4b659f",
+      "label": "T-shirt",
+      "price": 4000,
+      "userId": "4e1ea1d3-e385-47ec-9344-0995a6804438"
+    },
+    {
+      "id": "eb2c75ae-ed22-408e-9eb7-b3fc9ec56034",
+      "productId": "dfcc91b0-23da-4ed0-9de3-0722b9656c76",
+      "label": "Shoe",
+      "price": 1000,
       "userId": "4e1ea1d3-e385-47ec-9344-0995a6804438"
     }
   ]

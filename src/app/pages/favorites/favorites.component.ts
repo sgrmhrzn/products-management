@@ -7,7 +7,7 @@ import { IGlobalState, initialState } from '../../core/state/app.reducer';
 import { Store } from '@ngrx/store';
 import { fetchFavoritesRequest } from '../../core/state/app.action';
 import { IProductListConfigModel } from '../../core/models/product-list-config.model';
-import { IQueryParmsModel } from '../../core/models/query-params.model';
+import { IQueryParamsModel } from '../../core/models/query-params.model';
 import { PageTypeEnum } from '../../enum/page-type.enum';
 
 @Component({
@@ -17,6 +17,9 @@ import { PageTypeEnum } from '../../enum/page-type.enum';
   templateUrl: './favorites.component.html',
   styleUrl: './favorites.component.scss'
 })
+/**
+ * favorite list component
+ */
 export class FavoriteComponent implements OnInit {
   favorites$: Observable<IFavoriteProductModel[]> = this.store.select(selectFavoriteProducts);
   activeUser$ = this.store.select(selectActiveUser);
@@ -25,18 +28,11 @@ export class FavoriteComponent implements OnInit {
     data$: this.favorites$,
     showActionBtn: false,
     type:PageTypeEnum.Favorites,
-    onLoad: (params: IQueryParmsModel) => this.store.dispatch(fetchFavoritesRequest({ params })),
-    // onScroll: async (params: IQueryParmsModel) => await this.fetchData(params)
+    onLoad: (params: IQueryParamsModel) => this.store.dispatch(fetchFavoritesRequest({ params })),
   }
   constructor(private store: Store<IGlobalState>) {
 
   }
   async ngOnInit() {
-    // await this.fetchData();
   }
-
-  // async fetchData(params: IQueryParmsModel) {
-  //   const user = await firstValueFrom(this.activeUser$);
-  //   this.store.dispatch(fetchFavoritesRequest({ params: { ...params, userId: user?.id } }))
-  // }
 }

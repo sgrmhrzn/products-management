@@ -19,7 +19,7 @@ import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
 import _ from 'lodash';
 import { ProductListComponent } from "../../core/components/product-list/product-list.component";
 import { IProductListConfigModel } from '../../core/models/product-list-config.model';
-import { IQueryParmsModel } from '../../core/models/query-params.model';
+import { IQueryParamsModel } from '../../core/models/query-params.model';
 import { PageTypeEnum } from '../../enum/page-type.enum';
 @Component({
   selector: 'app-products',
@@ -32,6 +32,9 @@ import { PageTypeEnum } from '../../enum/page-type.enum';
   templateUrl: './products.component.html',
   styleUrl: './products.component.scss'
 })
+/**
+ * product list component
+ */
 export class ProductsComponent implements OnInit {
   products$: Observable<IProductModel[]> = this.store.select(selectProducts);
   queryParams$ = this.store.select(selectQueryParams);
@@ -39,7 +42,7 @@ export class ProductsComponent implements OnInit {
     data$: this.products$,
     type: PageTypeEnum.Products,
     showActionBtn: true,
-    onLoad: (params:IQueryParmsModel) => this.store.dispatch(fetchProductsRequest({ params })),
+    onLoad: (params:IQueryParamsModel) => this.store.dispatch(fetchProductsRequest({ params })),
   }
   constructor(private store: Store<IGlobalState>) {
 

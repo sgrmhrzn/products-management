@@ -26,7 +26,6 @@
         @for (product of products; track $index;) {
         <nz-card style="width:18.3%;height: max-content;" [nzCover]="coverTemplate"
             [nzActions]="config.showActionBtn && (activeUser$ | async)?.role === roleEnum.Admin? [actionFavorite,actionEdit, actionDelete]:[actionFavorite]">
-            <!-- <img src="https://loremflickr.com/320/240" style="width: 100%;" /> -->
             <nz-card-meta [nzTitle]="product.label" [nzDescription]="product.price"></nz-card-meta>
             <ng-template #actionEdit>
                 <a nz-tooltip nzTooltipTitle="Edit" (click)="edit(product.id)">
@@ -61,7 +60,7 @@
         
     </div>
     <div style="height: 30px" nz-flex nzJustify="center">
-        <nz-spin [hidden]="hideLoader" nzSimple></nz-spin>
+        <nz-spin [hidden]="hideLoader" nzSize="large" nzSimple></nz-spin>
     </div>
 </div>
 <router-outlet name="drawer"></router-outlet>

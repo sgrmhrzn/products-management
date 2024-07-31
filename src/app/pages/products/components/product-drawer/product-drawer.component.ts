@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators, NonNullableFormBuilder, ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NzDrawerModule } from 'ng-zorro-antd/drawer';
@@ -10,7 +10,7 @@ import { IGlobalState } from '../../../../core/state/app.reducer';
 import { addProductRequest, updateProductRequest } from '../../../../core/state/app.action';
 import { CommonService } from '../../../../core/services/common.service';
 import { selectProductById } from '../../../../core/state/app.selectors';
-import { firstValueFrom } from 'rxjs';
+import { firstValueFrom, Subscription } from 'rxjs';
 import { IProductModel } from '../../../../core/models/product.model';
 @Component({
   selector: 'app-product-drawer',
@@ -19,7 +19,10 @@ import { IProductModel } from '../../../../core/models/product.model';
   templateUrl: './product-drawer.component.html',
   styleUrl: './product-drawer.component.scss'
 })
-export class ProductDrawerComponent implements OnInit {
+/**
+ * add, edit product drawer component
+ */
+export class ProductDrawerComponent implements OnInit, OnDestroy {
   visible = true;
   form: FormGroup<{
     id: FormControl<string>;
@@ -32,18 +35,25 @@ export class ProductDrawerComponent implements OnInit {
     label: ['', [Validators.required, Validators.maxLength(25)]],
     price: ['', [Validators.required, Validators.maxLength(6), Validators.max(999999), Validators.min(1)]],
   });
+  sub!: Subscription;
 
 
   constructor(private router: Router, private activatedRoute: ActivatedRoute, private fb: NonNullableFormBuilder, private store: Store<IGlobalState>, private commonService: CommonService) {
 
   }
-  ngOnInit(): void {
-    this.activatedRoute.paramMap.subscribe(async res => {
-      const id = res.get('id') || '';
-      const product = await firstValueFrom(this.store.select(selectProductById(id)));
-      this.form.patchValue(product as IProductModel);
-      console.log(res.get('id'));
-    })
+
+  async ngOnInit() {
+    await this.checkIfProductExistAndPatchToForm();
+  }
+
+  /**
+   * if id exist check product and patch to form
+   */
+  async checkIfProductExistAndPatchToForm() {
+    const res = await firstValueFrom(this.activatedRoute.paramMap);
+    const id = res.get('id') || '';
+    const product = await firstValueFrom(this.store.select(selectProductById(id)));
+    this.form.patchValue(product as IProductModel);
   }
 
   open(): void {
@@ -55,17 +65,24 @@ export class ProductDrawerComponent implements OnInit {
     this.router.navigate(['products']);
   }
 
+  /**
+   * save product form information
+   */
   save() {
-    if(this.form.valid){
+    if (this.form.valid) {
 
       if (this.form.value.id) {
         this.store.dispatch(updateProductRequest({ product: { ...this.form.getRawValue() } }))
       } else {
         this.store.dispatch(addProductRequest({ product: { ...this.form.getRawValue(), createdDate: new Date(), id: this.commonService.uuidv4() } }))
       }
-    }else{
+    } else {
       this.form.controls.label.markAsDirty();
       this.form.controls.price.markAsDirty();
     }
+  }
+
+  ngOnDestroy(): void {
+    this.sub.unsubscribe();
   }
 }

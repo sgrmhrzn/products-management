@@ -1,9 +1,8 @@
 import { Routes } from '@angular/router';
 import { ErrorComponent } from './../../../pages/error/error.component';
 import { NavGuard } from '../../guards/nav.guard';
-// import { LoginComponent } from './pages/login/login.component';
-// import { AuthLayoutComponent } from './pages/auth-layout/auth-layout.component';
 
+//auth routes
 export const AUTH_ROUTES: Routes = [
   { path: 'products', canActivate: [NavGuard], loadChildren: () => import('./../../../pages/products/products.routes').then(m => m.PRODUCTS_ROUTES) },
   { path: 'favorites', canActivate: [NavGuard], loadChildren: () => import('./../../../pages/favorites/favorites.routes').then(m => m.FAVORITES_ROUTES) },

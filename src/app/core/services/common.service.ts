@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
@@ -20,6 +20,11 @@ export class CommonService {
     );
   }
 
+  /**
+   * parse link header data from api response header
+   * @param header string
+   * @returns 
+   */
   parse_link_header(header: string) {
     if (header.length == 0) {
       return;

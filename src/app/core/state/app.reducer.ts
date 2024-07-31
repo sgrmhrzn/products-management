@@ -2,8 +2,8 @@ import _ from "lodash";
 import { addFavorite, addProduct, addUser, deleteProduct, deleteUser, fetchFavoriteSuccess, fetchProductsRequestSuccess, fetchUsersRequestSuccess, loginRequestSuccess, removeFavorite, updateFavoriteFlag, updateProduct, updateUser } from "./app.action";
 import { IActiveUserModel, IUserModel } from "../models/user.model";
 import { IProductModel } from "../models/product.model";
-import { IQueryParmsModel } from "../models/query-params.model";
-import { IFavoriteModel, IFavoriteProductModel } from "../models/favorite.model";
+import { IQueryParamsModel } from "../models/query-params.model";
+import { IFavoriteProductModel } from "../models/favorite.model";
 
 /**
  * Global state of store
@@ -18,7 +18,7 @@ export interface IGlobalState {
 export interface IAppState {
   products: IProductModel[];
   favorites: IFavoriteProductModel[];
-  queryParams: IQueryParmsModel;
+  queryParams: IQueryParamsModel;
   users: IUserModel[];
   activeUser?: IActiveUserModel;
   error?: string;
@@ -96,8 +96,6 @@ export function appReducer(state = initialState, action: any): IAppState {
       return { ...state, products: cloned };
     }
     case addFavorite.type: {
-      // state.products.find(x => x.id === action.favorite.);
-
       return {
         ...state, favorites: [...state.favorites, action.favorite], products: state.products.map(p => (p.id === action.favorite.productId ? { ...p, isFavorite: true } : p))
       }

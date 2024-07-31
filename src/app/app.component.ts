@@ -19,13 +19,6 @@ import { loginRequestSuccess } from './core/state/app.action';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
-  //   //check active user session, if no session redirects to login page
-  //   activeUser$ = this.store.select(selectActiveUser).pipe(map(a => {
-  //     // this.loginUser.set(a);
-  //     a?.id ? null : this.router.navigateByUrl('login');
-  //   }))
-
-  // isCollapsed = false;
 
   constructor(private router: Router, private store: Store<IGlobalState>) {
 
@@ -34,7 +27,6 @@ export class AppComponent implements OnInit {
     const user = JSON.parse(localStorage.getItem(environment.ACTIVE_USER_KEY) || '');
     if (user) {
       this.store.dispatch(loginRequestSuccess({ user }));
-      // this.router.navigateByUrl('products');
     }
   }
 }

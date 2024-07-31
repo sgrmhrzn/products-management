@@ -3,7 +3,7 @@ import { IProductModel, IQueryProductModel } from '../models/product.model';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { HttpClient, HttpResponse } from '@angular/common/http';
-import { IQueryParmsModel } from '../models/query-params.model';
+import { IQueryParamsModel } from '../models/query-params.model';
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +17,7 @@ export class ProductService {
   * Fetch all products
   *
   * */
-  getAll(queryParams: IQueryParmsModel): Observable<HttpResponse<IProductModel[]>> {
+  getAll(queryParams: IQueryParamsModel): Observable<HttpResponse<IProductModel[]>> {
     return this.http.get<IProductModel[]>(`${environment.SERVER_URL}products?label_like=${queryParams.searchKeyword}&_page=${queryParams.page}`, { observe: 'response' });
   }
 
@@ -49,10 +49,10 @@ export class ProductService {
   }
 
   /**
- * Add new product
- * @param product IProductModel - product information
- * @returns Observable<IProductModel>
- */
+   * get product by label name
+   * @param label string
+   * @returns IProductModel[]
+   */
   getProductByLabel(label: string): Observable<IProductModel[]> {
     return this.http.get<IProductModel[]>(`${environment.SERVER_URL}products?label=${label}`);
   }

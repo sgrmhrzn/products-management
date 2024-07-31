@@ -14,15 +14,6 @@ export interface IUserModel {
 }
 
 /**
- * Holds user assignment information in the role
- */
-export interface IUserAssignModel {
-    id: string;
-    role: RoleEnum;
-    userIds: Array<string>;
-}
-
-/**
  * Holds the active user information 
  */
 export interface IActiveUserModel {

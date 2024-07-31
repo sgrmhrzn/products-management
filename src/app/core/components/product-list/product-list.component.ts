@@ -21,7 +21,7 @@ import { updateFavoriteFlag, removeFavoriterRequest, addFavoriteRequest, fetchFa
 import { IFavoriteModel, IFavoriteProductModel } from '../../models/favorite.model';
 import { selectActiveUser, selectFavorite, selectProducts, selectQueryParams } from '../../state/app.selectors';
 import { IProductModel } from '../../models/product.model';
-import { IQueryParmsModel } from '../../models/query-params.model';
+import { IQueryParamsModel } from '../../models/query-params.model';
 import { IProductListConfigModel } from '../../models/product-list-config.model';
 import { RoleEnum } from '../../../enum/role.enum';
 import { PageTypeEnum } from '../../../enum/page-type.enum';
@@ -41,7 +41,7 @@ export class ProductListComponent {
   @Input() config!: IProductListConfigModel;
   favorites$: Observable<IFavoriteProductModel[]> = this.store.select(selectFavorite);
   activeUser$ = this.store.select(selectActiveUser);
-  queryParams$: Observable<IQueryParmsModel> = this.store.select(selectQueryParams);
+  queryParams$: Observable<IQueryParamsModel> = this.store.select(selectQueryParams);
 
   searchForm: FormGroup<{
     keyword: FormControl<string>;
@@ -54,16 +54,44 @@ export class ProductListComponent {
   constructor(private router: Router, private store: Store<IGlobalState>, private fb: NonNullableFormBuilder, private commonService: CommonService) {
 
   }
+  ngAfterViewInit(): void {
+    const scroll = fromEvent(this.productsContainer.nativeElement, 'scroll');
+    const result = scroll.pipe(debounceTime(500));
+    result.subscribe(async x => await this.scroll(x));
+  }
+  
+  async ngOnInit() {
+    const user = await firstValueFrom(this.activeUser$);
+    this.onLoad({ ...initialState.queryParams, userId: user?.id });
 
+    this.searchForm.get('keyword')?.valueChanges.pipe(
+      debounceTime(500)
+    ).subscribe(async value => {
+      // handle the value after 500ms of inactivity
+      this.config.onLoad({ ...initialState.queryParams, userId: user?.id, searchKeyword: value });
+    });
+  }
+
+  /**
+   * redirect to add prodcut
+   */
   add() {
     this.router.navigate(['products', { outlets: { drawer: ['add'] } }]);
   }
 
+  /**
+   * redirect to edit product
+   * @param id 
+   */
   edit(id: string) {
     console.log(id);
     this.router.navigate(['products', { outlets: { drawer: ['edit', id] } }]);
   }
 
+  /**
+   * delete product
+   * @param product IProductModel 
+   */
   deleteProduct(product: IProductModel | IFavoriteProductModel) {
     this.store.dispatch(deleteProductRequest({ product: product as IProductModel }))
   }
@@ -85,23 +113,10 @@ export class ProductListComponent {
 
   }
 
-  ngAfterViewInit(): void {
-    const scroll = fromEvent(this.productsContainer.nativeElement, 'scroll');
-    const result = scroll.pipe(debounceTime(500));
-    result.subscribe(async x => await this.scroll(x));
-  }
-  async ngOnInit() {
-    const user = await firstValueFrom(this.activeUser$);
-    this.onLoad({ ...initialState.queryParams, userId: user?.id });
-
-    this.searchForm.get('keyword')?.valueChanges.pipe(
-      debounceTime(500)
-    ).subscribe(async value => {
-      // handle the value after 500ms of inactivity
-      this.config.onLoad({ ...initialState.queryParams, userId: user?.id, searchKeyword: value });
-    });
-  }
-
+  /**
+   * handle scroll event
+   * @param event 
+   */
   async scroll(event: any) {
     if ((event.target.offsetHeight + event.target.scrollTop) + 100 >= event.target.scrollHeight) {
       const params = await firstValueFrom(this.queryParams$);
@@ -113,7 +128,11 @@ export class ProductListComponent {
 
   }
 
-  async onLoad(params: IQueryParmsModel) {
+  /**
+   * load data on scroll and intial load
+   * @param params IQueryParamsModel
+   */
+  async onLoad(params: IQueryParamsModel) {
     this.hideLoader = false;
 
     const result = lastValueFrom(timer(500).pipe(map(() => this.hideLoader = true)));

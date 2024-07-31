@@ -22,9 +22,10 @@ import { NzButtonModule } from 'ng-zorro-antd/button';
   templateUrl: './detail.component.html',
   styleUrl: './detail.component.scss'
 })
+/**
+ * user detail component
+ */
 export class DetailComponent implements OnInit {
-  // readonly nzModalData = inject(NZ_DRAWER_DATA);
-
   user$!: Observable<IUserModel>;
   roleEnum = RoleEnum;
 
@@ -34,17 +35,11 @@ export class DetailComponent implements OnInit {
   async ngOnInit() {
     const res = await firstValueFrom(this.activatedRoute.paramMap);
     const id = res.get('id') || '';
-    // const product = await firstValueFrom(this.store.select(selectProductById(id)));
-    // this.form.patchValue(product as IProductModel);
     this.user$ = this.store.select(selectUserById(id));
-    // this.user.subscribe(res => console.log(res));
-    // this.user = user;
-    // console.log(res.get('id'), this.user);
 
   }
 
   close(): void {
-    // this.visible = false;
     this.router.navigate(['users']);
   }
 
