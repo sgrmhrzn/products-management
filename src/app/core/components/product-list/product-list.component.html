@@ -24,7 +24,7 @@
         @if(products.length && products){
 
         @for (product of products; track $index;) {
-        <nz-card style="width:18.3%;height: max-content;" [nzCover]="coverTemplate"
+        <nz-card class="card" [nzCover]="coverTemplate"
             [nzActions]="config.showActionBtn && (activeUser$ | async)?.role === roleEnum.Admin? [actionFavorite,actionEdit, actionDelete]:[actionFavorite]">
             <nz-card-meta [nzTitle]="product.label" [nzDescription]="product.price"></nz-card-meta>
             <ng-template #actionEdit>

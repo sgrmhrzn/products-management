@@ -2,13 +2,27 @@
     overflow-y: scroll;
     height: calc(100% - 80px);
 }
-.ant-form-item{
+
+.ant-form-item {
     margin: 0;
 }
-.thumbnail{
+
+.thumbnail {
     object-fit: cover;
     object-position: center;
 }
-.inner-wrapper{
+
+.inner-wrapper {
     // justify-content: center;
 }
+
+.card {
+    width: 18.3%;
+    height: max-content;
+}
+
+@media screen and (max-width: 500px) {
+    .card {
+      width: 100%;
+    }
+  }
