@@ -14,7 +14,7 @@ This project was generated with following technical stacks
 
 ## Run in local 
 
-1. Run `npx json-server .\db.json` for local db
+1. Run `npx json-server db.json` for local db
 2. Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
 
 ## Generate and browse documentation in local
