@@ -279,7 +279,7 @@ export class AppEffects {
                     if (userData.length) {
 
                         this.messageService.success(`Log in successful`);
-                        const user = { id: userData[0].id, name: userData[0].name, role: userData[0].role, username: userData[0].username };
+                        const user = { id: userData[0].id, name: userData[0].name, role: +(userData[0].role || 0), username: userData[0].username };
                         localStorage.setItem(environment.ACTIVE_USER_KEY, JSON.stringify(user));
                         this.router.navigateByUrl('products');
                         return actions.loginRequestSuccess({ user });
