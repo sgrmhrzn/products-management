@@ -21,7 +21,7 @@ This project was generated with following technical stacks
 1. Run `npm run compodoc` to generate docs
 2. Run `npm run compodoc:serve` to serve in local browser
 
-![alt text](https://github.com/sgrmhrzn/product-managment/blob/main/src/assets/doc.jpg)
+![alt text](https://github.com/sgrmhrzn/products-management/blob/main/src/assets/doc.jpg)
 
 ## Code scaffolding
 
@@ -42,6 +42,6 @@ Password: 123456
 
 
 ## Snapshots
-![alt text](https://github.com/sgrmhrzn/product-managment/blob/main/src/assets/1.jpg)
-![alt text](https://github.com/sgrmhrzn/product-managment/blob/main/src/assets/2.jpg)
-![alt text](https://github.com/sgrmhrzn/product-managment/blob/main/src/assets/3.jpg)
+![alt text](https://github.com/sgrmhrzn/products-management/blob/main/src/assets/1.jpg)
+![alt text](https://github.com/sgrmhrzn/products-management/blob/main/src/assets/2.jpg)
+![alt text](https://github.com/sgrmhrzn/products-management/blob/main/src/assets/3.jpg)
